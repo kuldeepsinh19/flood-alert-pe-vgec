@@ -1,0 +1,125 @@
+<!-- views/admin.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    .navbar {
+      background-color: #3498db;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 14px 16px;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #ecf0f1;
+    }
+
+    .village-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .village-button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .village-button:hover {
+      background-color: #2980b9;
+    }
+
+    .admin-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+
+    .admin-button {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .red-button {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .orange-button {
+      background-color: #e67e22;
+      color: white;
+    }
+
+    .yellow-button {
+      background-color: #f39c12;
+      color: white;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <a href="/home">Home</a>
+    <a href="/admin">Admin</a>
+  </div>
+
+  <div class="village-buttons">
+    <button class="village-button" onclick="showVillageInfo(1)">Village 1</button>
+    <button class="village-button" onclick="showVillageInfo(2)">Village 2</button>
+    <button class="village-button" onclick="showVillageInfo(3)">Village 3</button>
+    <button class="village-button" onclick="showVillageInfo(4)">Village 4</button>
+    <button class="village-button" onclick="showVillageInfo(5)">Village 5</button>
+  </div>
+
+  <div class="admin-buttons">
+    <div class="admin-button red-button" onclick="handleAlert('red')">Red</div>
+    <div class="admin-button orange-button" onclick="handleAlert('orange')">Orange</div>
+    <div class="admin-button yellow-button" onclick="handleAlert('yellow')">Yellow</div>
+  </div>
+
+  <script>
+    function handleAlert(color) {
+      // Implement your logic to handle alerts based on color (red, orange, yellow)
+      console.log(`Alert triggered: ${color}`);
+    }
+
+    function showVillageInfo(villageNumber) {
+      // Implement your logic to show village information
+      console.log(`Show information for Village ${villageNumber}`);
+    }
+  </script

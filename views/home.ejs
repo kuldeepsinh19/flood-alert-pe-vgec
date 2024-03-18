@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Water Level Dashboard</title>
+    <link rel="stylesheet" href="/home.css" />
+  </head>
+
+  <body>
+    <div class="navbar">
+      <ul>
+        <li><a href="#" id="homeLink" class="active">HOME</a></li>
+        <li><a href="#" id="contactLink">CONTACT</a></li>
+        <li><a href="#" id="aboutLink">ABOUT</a></li>
+        <li><a href="#" id="villagesLink">VILLAGES</a></li>
+      </ul>
+    </div>
+    <div class="container">
+      <div class="dec">
+        <h1>DESCRIPTION</h1>
+        <p class="decp">
+          The Water Alert System is a vital tool for monitoring water levels in
+          various villages, offering timely alerts to ensure community safety.
+          With a user-friendly interface, users, including both normal and admin
+          users, can access current water level information for five different
+          villages. Clickable buttons represent each village, enabling users to
+          view detailed status updates. Color-coded indicators - green for
+          stable conditions, yellow for warnings, and red for flood alerts -
+          provide instant insights into the severity of the situation. This
+          system facilitates proactive decision-making, empowering individuals
+          and authorities to take swift and effective measures in response to
+          fluctuating water levels, enhancing overall community resilience. The
+          system's intuitive interface fosters community engagement by enabling
+          users to access vital information with ease. Through real-time updates
+          and color-coded indicators, individuals can make informed decisions
+          and implement precautionary measures promptly. This proactive approach
+          not only mitigates risks but also fosters a sense of collective
+          responsibility, enhancing community resilience and well-being.
+        </p>
+      </div>
+      <h1>CURRENT WATER LEVEL FOR VILLAGES</h1>
+      <div class="grid">
+        <% for (let i = 1; i <= 8; i++) { %>
+        <div class="box">
+          <h2>Village <%= i %></h2>
+          <hr />
+          <p><span class="key">About Village:</span> Random geological description in 3 lines.</p>
+    <p><span class="key">Current Water Level:</span> <%= Math.floor(Math.random() * (100 - 80 + 1)) + 80 %> cm</p>
+    <p><span class="key">Average Water Level:</span> <%= Math.floor(Math.random() * (100 - 80 + 1)) + 80 %> cm</p>
+    <p><span class="key">Status:</span> Normal</p>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    <div class="footer">
+      <p>WaterLevelAlert &copy; 2024</p>
+    </div>
+  </body>
+  <script>
+    // Get the navbar links by their IDs
+    const homeLink = document.getElementById('homeLink');
+    const contactLink = document.getElementById('contactLink');
+    const aboutLink = document.getElementById('aboutLink');
+    const villagesLink = document.getElementById('villagesLink');
+
+    // Add click event listeners to each navbar link
+    homeLink.addEventListener('click', () => {
+      window.location.href = '/landing'; // Navigate to the home page
+    });
+
+    contactLink.addEventListener('click', () => {
+      window.location.href = '/contact'; // Navigate to the contact page
+    });
+
+    aboutLink.addEventListener('click', () => {
+      window.location.href = '/about'; // Navigate to the about page
+    });
+
+    villagesLink.addEventListener('click', () => {
+      window.location.href = '/villages'; // Navigate to the villages page
+    });
+  </script>
+</html>
