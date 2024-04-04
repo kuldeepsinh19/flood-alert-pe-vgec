@@ -7,6 +7,8 @@ const {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
 } = require("firebase/auth");
+const { getDatabase, set , ref, push, onValue } = require("firebase/database"); // Import necessary database functions
+
 const app = express();
 const port = 3000;
 
@@ -21,6 +23,7 @@ const firebaseConfig = {
   measurementId: "G-NL86V4999M",
 };
 const firebaseApp = initializeApp(firebaseConfig);
+const database = getDatabase(firebaseApp);
 
 const auth = getAuth(firebaseApp);
 
@@ -31,6 +34,9 @@ app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// Define the reference to the 'adminForms' node in the database
+const adminFormRef = ref(database, "adminForms");
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
@@ -43,7 +49,12 @@ app.post("/login", (req, res) => {
     .then((userCredential) => {
       const user = userCredential.user;
       console.log(user);
-      res.render("home");
+      if (email === "kuldeepsinhrajput1919@gmail.com") {
+        // If the user is an admin, redirect to admin page
+        res.redirect("/admin");
+      } else {
+        res.redirect("/login/landing"); // Redirect non-admin users to home page
+      }
     })
     .catch((signInError) => {
       let errorMessage = "";
@@ -89,29 +100,105 @@ app.post("/signup", (req, res) => {
       res.status(500).render("signup", { errorMessage: errorMessage });
     });
 });
+
 app.get("/forgot-password", (req, res) => {
   res.render("forgotPass", { errorMessage: "" }); // Pass an empty string as the initial value
 });
+
 // Render login page
 app.get("/", (req, res) => {
+  // updateNameValue('khanpur');
   res.render("login", { errorMessage: "" }); // Pass an empty string as the initial value
 });
 
-app.get("/landing", (req, res) => {
+app.get("/login/landing", (req, res) => {
   res.render("landingPage", {
     errorMessage: "",
   });
 });
+
 app.get("/villages", (req, res) => {
   res.render("home", {
     errorMessage: "",
   });
 });
+
+
+// const generateRandomWaterLevel = () => Math.round(Math.random() * 20 + 80);
+const generateRandomWaterLevel = () => Math.round(Math.random() * 20 + 180);
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const saveRandomValueToDatabase = async (
+  villageName,
+  monthKey,
+  dayKey,
+  hour,
+  minute
+) => {
+  const timeKey = `${hour.toString().padStart(2, "0")}:${minute
+    .toString()
+    .padStart(2, "0")}`;
+  const randomValue = generateRandomWaterLevel();
+
+  // Save the value to the database under the specified village, month, day, hour, and minute
+  try {
+    const userRef = ref(
+      database,
+      `VillageList/${villageName}/${monthKey}/${dayKey}/${timeKey}`
+    );
+    // usersRef.child('yourVillageName').update({ name: newName })
+
+    await set(userRef, randomValue);
+    console.log(
+      `${villageName}/${monthKey}/${dayKey}/${timeKey}:`,
+      randomValue,
+      "Value added to the database"
+    );
+  } catch (error) {
+    console.log("Error saving value to the database:", error);
+  }
+};
+app.get("/village", async (req, res) => {
+  const villageName = "mangarh"; // Replace with the actual village name
+
+  for (let month = 1; month <= 12; month++) {
+    const monthKey = `month${month}`;
+
+    for (let day = 1; day <= 30; day++) {
+      const dayKey = `day${day}`;
+	
+      for (let hour = 0; hour < 24; hour++) {
+        for (let minute = 0; minute < 60; minute += 10) {
+          await saveRandomValueToDatabase(
+            villageName,
+            monthKey,
+            dayKey,
+            hour,
+            minute
+          );
+          await wait(1); // Adjust the wait time here (in milliseconds)
+        }
+      }
+    }
+  }
+
+  res.send("Values added to the database.");
+});
+
+
+// Call the function to update the name value
 app.get("/contact", (req, res) => {
   res.render("contact", {
-    errorMessage:''
-  })
-})
+    errorMessage: "",
+  });
+});
+
+app.get("/about", (req, res) => {
+  res.render("about", {
+    errorMessage: "",
+  });
+});
 
 // Handle forgot password request
 app.post("/forgot-password", (req, res) => {
@@ -124,6 +211,36 @@ app.post("/forgot-password", (req, res) => {
     .catch((error) => {
       console.error("Error sending password reset email:", error);
       res.status(500).send("Error sending password reset email.");
+    });
+});
+
+app.get("/admin", (req, res) => {
+  onValue(
+    adminFormRef,
+    (snapshot) => {
+      const formData = snapshot.val();
+      res.render("admin", { formData: formData });
+    },
+    (errorObject) => {
+      console.log("The read failed: " + errorObject.code);
+      res.status(500).send("Failed to retrieve form data.");
+    }
+  );
+});
+
+app.post("/submit-contact", (req, res) => {
+  const formData = req.body;
+
+  // Push form data to Firebase Realtime Database
+  push(adminFormRef, formData)
+    .then(() => {
+      console.log("Form data saved successfully:", formData);
+      // Decide whether to redirect or render a new page
+      res.render("about"); // Rendering the "about" page after form submission
+    })
+    .catch((error) => {
+      console.error("Error saving form data:", error);
+      res.status(500).send("Failed to save form data.");
     });
 });
 

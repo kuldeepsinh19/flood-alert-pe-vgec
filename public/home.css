@@ -67,7 +67,7 @@ h1 {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  width: 400px;
 }
 
 .box h2 {
@@ -115,4 +115,31 @@ h1 {
   bottom: 0;
   left: 0;
   width: 100%;
+}
+
+.red{
+  background: rgb(223, 125, 125);
+  height: 53px;
+  width: 54px;
+  border: solid black 4px;
+  border-radius: 61px;
+}
+.green{
+  background: rgb(137, 228, 128);
+  height: 53px;
+  width: 54px;
+  border: solid black 4px;
+  border-radius: 61px;
+}
+.orange{
+  background: rgb(239, 176, 109);
+  height: 53px;
+  width: 54px;
+  border: solid black 4px;
+  border-radius: 61px;
+}
+.main{
+  display: flex;
+width: 200px;
+justify-content: space-between;
 }
