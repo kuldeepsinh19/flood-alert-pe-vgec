@@ -12,6 +12,11 @@
         <ul>
          <h2>Welcome admin</h2>
         </ul>
+      
+            <% if(email) { %>
+              <p class="email-message"> <%=  email %></p>
+              <% } %>
+          
     </div>
     <div class="container">
         <h1>Form Submissions</h1>

@@ -9,17 +9,22 @@
 <body>
     <div class="navbar">
         <ul>
-            <li><a href="#" id="homeLink" class="active">HOME</a></li>
-            <li><a href="#" id="contactLink">CONTACT</a></li>
-            <li><a href="#" id="aboutLink">ABOUT</a></li>
-            <li><a href="#" id="villagesLink">VILLAGES</a></li>
+          <li><a href="#" id="homeLink" class="active">HOME</a></li>
+          <li><a href="#" id="contactLink">CONTACT</a></li>
+          <li><a href="#" id="aboutLink">ABOUT</a></li>
+          <li><a href="#" id="villagesLink">VILLAGES</a></li>
+    
         </ul>
-    </div>
+        <% if(email) { %>
+          <p class="email-message">welcome, <%=  email %></p>
+          <% } %>
+      </div>
     <div class="container">
         <h1>Get In Touch With Us</h1>
         <div class="content">
             <div class="contact-form">
                 <h2>Contact Us</h2>
+            
                 <form action="/submit-contact" method="POST">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" required>
@@ -46,20 +51,20 @@
     const aboutLink = document.getElementById('aboutLink');
     const villagesLink = document.getElementById('villagesLink');
 
-    homeLink.addEventListener('click', () => {
-        window.location.href = '/login/landing';
+    homeLink.addEventListener("click", () => {
+      window.location.href = "/landing"; // Navigate to the home page
     });
 
-    contactLink.addEventListener('click', () => {
-        window.location.href = '/contact';
+    contactLink.addEventListener("click", () => {
+      window.location.href = "/contact"; // Navigate to the contact page
     });
 
-    aboutLink.addEventListener('click', () => {
-        window.location.href = '/about';
+    aboutLink.addEventListener("click", () => {
+      window.location.href = "/about"; // Navigate to the about page
     });
 
-    villagesLink.addEventListener('click', () => {
-        window.location.href = '/villages';
+    villagesLink.addEventListener("click", () => {
+      window.location.href = "/villages"; // Navigate to the villages page
     });
 </script>
 </html>

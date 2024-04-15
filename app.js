@@ -7,10 +7,12 @@ const {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
 } = require("firebase/auth");
-const { getDatabase, set , ref, push, onValue } = require("firebase/database"); // Import necessary database functions
+const { getDatabase, set, ref, push, onValue } = require("firebase/database"); // Import necessary database functions
+const { doc } = require("firebase/firestore");
 
 const app = express();
-const port = 3000;
+const port = 4000;
+
 
 // Firebase configuration
 const firebaseConfig = {
@@ -47,13 +49,13 @@ app.post("/login", (req, res) => {
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const user = userCredential.user;
+      const  user = userCredential.user;
       console.log(user);
       if (email === "kuldeepsinhrajput1919@gmail.com") {
         // If the user is an admin, redirect to admin page
         res.redirect("/admin");
       } else {
-        res.redirect("/login/landing"); // Redirect non-admin users to home page
+        res.redirect("/landing"); // Redirect non-admin users to home page
       }
     })
     .catch((signInError) => {
@@ -62,6 +64,10 @@ app.post("/login", (req, res) => {
         errorMessage = "User not found. Please sign up.";
       } else if (signInError.code === "auth/wrong-password") {
         errorMessage = "Invalid password. Please try again.";
+      } else if (signInError.code === "auth/invalid-credential") {
+        errorMessage = "invalid credentials ";
+      } else if (signInError.code === "auth/invalid-email") {
+        errorMessage = "invalid email ";
       } else {
         errorMessage = "Error signing in. Please try again later.";
       }
@@ -107,22 +113,29 @@ app.get("/forgot-password", (req, res) => {
 
 // Render login page
 app.get("/", (req, res) => {
-  // updateNameValue('khanpur');
   res.render("login", { errorMessage: "" }); // Pass an empty string as the initial value
 });
 
-app.get("/login/landing", (req, res) => {
+app.get("/landing", (req, res) => {
+    const user =  auth.currentUser
+    console.log(user.email , "1111111111111111111111111111111")
+ 
   res.render("landingPage", {
     errorMessage: "",
+    email:user.email.replace('@gmail.com' , ' ')
+    
+    
   });
 });
 
 app.get("/villages", (req, res) => {
+  const user =  auth.currentUser
+
   res.render("home", {
     errorMessage: "",
+    email:user.email.replace('@gmail.com' , ' ')
   });
 });
-
 
 // const generateRandomWaterLevel = () => Math.round(Math.random() * 20 + 80);
 const generateRandomWaterLevel = () => Math.round(Math.random() * 20 + 180);
@@ -167,7 +180,7 @@ app.get("/village", async (req, res) => {
 
     for (let day = 1; day <= 30; day++) {
       const dayKey = `day${day}`;
-	
+
       for (let hour = 0; hour < 24; hour++) {
         for (let minute = 0; minute < 60; minute += 10) {
           await saveRandomValueToDatabase(
@@ -186,17 +199,23 @@ app.get("/village", async (req, res) => {
   res.send("Values added to the database.");
 });
 
-
 // Call the function to update the name value
 app.get("/contact", (req, res) => {
+  const user =  auth.currentUser
+
   res.render("contact", {
     errorMessage: "",
+    email:user.email.replace('@gmail.com' , ' ')
   });
 });
 
 app.get("/about", (req, res) => {
+  const user =  auth.currentUser
+
   res.render("about", {
     errorMessage: "",
+    email:user.email.replace('@gmail.com' , ' ')
+
   });
 });
 
@@ -215,11 +234,18 @@ app.post("/forgot-password", (req, res) => {
 });
 
 app.get("/admin", (req, res) => {
+
+  const user =  auth.currentUser
+
   onValue(
     adminFormRef,
     (snapshot) => {
       const formData = snapshot.val();
-      res.render("admin", { formData: formData });
+      res.render("admin", {
+        formData: formData,
+        email:user.email.replace('@gmail.com' , ' ')
+
+      });
     },
     (errorObject) => {
       console.log("The read failed: " + errorObject.code);
@@ -227,7 +253,6 @@ app.get("/admin", (req, res) => {
     }
   );
 });
-
 app.post("/submit-contact", (req, res) => {
   const formData = req.body;
 

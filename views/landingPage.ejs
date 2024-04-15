@@ -14,7 +14,11 @@
         <li><a href="#" id="contactLink">CONTACT</a></li>
         <li><a href="#" id="aboutLink">ABOUT</a></li>
         <li><a href="#" id="villagesLink">VILLAGES</a></li>
+  
       </ul>
+      <% if(email) { %>
+        <p class="email-message">welcome, <%=  email %></p>
+        <% } %>
     </div>
     <div class="container">
         <h1>About Water Levels in Indian Villages</h1>

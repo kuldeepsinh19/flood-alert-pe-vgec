@@ -1,81 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Water Level Dashboard</title>
-  <link rel="stylesheet" href="/home.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Water Level Dashboard</title>
+    <link rel="stylesheet" href="home.css" />
+  </head>
 
-<body>
-  <div class="navbar">
-    <ul>
-      <li><a href="#" id="homeLink" class="active">HOME</a></li>
-      <li><a href="#" id="contactLink">CONTACT</a></li>
-      <li><a href="#" id="aboutLink">ABOUT</a></li>
-      <li><a href="#" id="villagesLink">VILLAGES</a></li>
-    </ul>
-  </div>
-  <div class="container">
-    <div class="dec">
-      <h1>DESCRIPTION</h1>
-      <p class="decp">
-        The Water Alert System is a vital tool for monitoring water levels in
-        various villages, offering timely alerts to ensure community safety.
-        With a user-friendly interface, users, including both normal and admin
-        users, can access current water level information for six different
-        villages. Clickable buttons represent each village, enabling users to
-        view detailed status updates. Color-coded indicators - green for
-        stable conditions, yellow for warnings, and red for flood alerts -
-        provide instant insights into the severity of the situation. This
-        system facilitates proactive decision-making, empowering individuals
-        and authorities to take swift and effective measures in response to
-        fluctuating water levels, enhancing overall community resilience. The
-        system's intuitive interface fosters community engagement by enabling
-        users to access vital information with ease. Through real-time updates
-        and color-coded indicators, individuals can make informed decisions
-        and implement precautionary measures promptly. This proactive approach
-        not only mitigates risks but also fosters a sense of collective
-        responsibility, enhancing community resilience and well-being.
-      </p>
+  <body>
+    <div class="navbar">
+      <ul>
+        <li><a href="#" id="homeLink" class="active">HOME</a></li>
+        <li><a href="#" id="contactLink">CONTACT</a></li>
+        <li><a href="#" id="aboutLink">ABOUT</a></li>
+        <li><a href="#" id="villagesLink">VILLAGES</a></li>
+  
+      </ul>
+      <% if(email) { %>
+        <p class="email-message">welcome, <%=  email %></p>
+        <% } %>
     </div>
-    <h1>CURRENT WATER LEVEL FOR VILLAGES</h1>
-    <div class="grid">
-      <div class="box">
-        <h2>Village 1</h2>
-        <hr />
-        <p><span class="key">About Village 1:</span> Random geological description in 3 lines.</p>
-        <% var seaLevel = Math.floor(Math.random() * (150 - 200 + 1)) + 200; %>
-        <p><span class="key">Current Water Level:</span> <%= seaLevel %> cm</p>
-        <p><span class="key">Status:</span> <%= seaLevel > 180 ? "Flood Alert" : "Normal" %></p>
-
-        <div class="main">
-          <div class="red"></div>
-          <div class="green"></div>
-          <div class="orange"></div>
+    <div class="container">
+      <div class="dec">
+        <h1>DESCRIPTION</h1>
+        <p class="decp">
+          The Water Alert System is a vital tool for monitoring water levels in
+          various villages, offering timely alerts to ensure community safety.
+          With a user-friendly interface, users, including both normal and admin
+          users, can access current water level information for six different
+          villages. Clickable buttons represent each village, enabling users to
+          view detailed status updates. Color-coded indicators - green for
+          stable conditions, yellow for warnings, and red for flood alerts -
+          provide instant insights into the severity of the situation. This
+          system facilitates proactive decision-making, empowering individuals
+          and authorities to take swift and effective measures in response to
+          fluctuating water levels, enhancing overall community resilience. The
+          system's intuitive interface fosters community engagement by enabling
+          users to access vital information with ease. Through real-time updates
+          and color-coded indicators, individuals can make informed decisions
+          and implement precautionary measures promptly. This proactive approach
+          not only mitigates risks but also fosters a sense of collective
+          responsibility, enhancing community resilience and well-being.
+        </p>
+      </div>
+      <h1>CURRENT WATER LEVEL FOR VILLAGES</h1>
+      <div class="grid">
+        <div class="village" id="village1">
+          <h2>Khansar</h2>
+          <hr />
+          <br />
+          <div class="status-circle" id="circle1"></div>
+          <p class="text">Status: <span id="status1"></span></p>
+          <p class="text">Water Level: <span id="waterLevel1"></span></p>
+          <p class="text">Peak Water Level: <span id="peakLevel1">200</span></p>
+        </div>
+        <div class="village" id="village2">
+          <h2>Bhangarh</h2>
+          <hr />
+          <br />
+          <div class="status-circle" id="circle2"></div>
+          <p class="text">Status: <span id="status2"></span></p>
+          <p class="text">Water Level: <span id="waterLevel2"></span></p>
+          <p class="text">Peak Water Level: <span id="peakLevel2">180</span></p>
+        </div>
+        <div class="village" id="village3">
+          <h2>Virpur</h2>
+          <hr />
+          <br />
+          <div class="status-circle" id="circle3"></div>
+          <p class="text">Status: <span id="status3"></span></p>
+          <p class="text">Water Level: <span id="waterLevel3"></span></p>
+          <p class="text">Peak Water Level: <span id="peakLevel3">160</span></p>
+        </div>
+        <div class="village" id="village4">
+          <h2>Malpur</h2>
+          <hr />
+          <br />
+          <div class="status-circle" id="circle4"></div>
+          <p class="text">Status: <span id="status4"></span></p>
+          <p class="text">Water Level: <span id="waterLevel4"></span></p>
+          <p class="text">Peak Water Level: <span id="peakLevel4">140</span></p>
+        </div>
+        <!-- New villages -->
+        <div class="village" id="village5">
+          <h2>adarshnagar</h2>
+          <hr />
+          <br />
+          <div class="status-circle" id="circle5"></div>
+          <p class="text">Status: <span id="status5"></span></p>
+          <p class="text">Water Level: <span id="waterLevel5"></span></p>
+          <p class="text">Peak Water Level: <span id="peakLevel5">130</span></p>
+        </div>
+        <div class="village" id="village6">
+          <h2>niyamgarh</h2>
+          <hr />
+          <br />
+          <div class="status-circle" id="circle6"></div>
+          <p class="text">Status: <span id="status6"></span></p>
+          <p class="text">Water Level: <span id="waterLevel6"></span></p>
+          <p class="text">Peak Water Level: <span id="peakLevel6">120</span></p>
+        </div>
+        <div class="village" id="village7">
+          <h2>sihor</h2>
+          <hr />
+          <br />
+          <div class="status-circle" id="circle7"></div>
+          <p class="text">Status: <span id="status7"></span></p>
+          <p class="text">Water Level: <span id="waterLevel7"></span></p>
+          <p class="text">Peak Water Level: <span id="peakLevel7">110</span></p>
         </div>
       </div>
-      <!-- /////////////////////// -->
-      <% for (let i = 2; i <= 6; i++) { %>
-      <div class="box">
-        <h2>Village <%= i %></h2>
-        <hr />
-        <p><span class="key">About Village <%= i %>:</span> Random geological description in 3 lines.</p>
-        <% var villageLevel = Math.floor(Math.random() * (50 - 150 + 1)) + 150; %>
-        <p><span class="key">Current Water Level:</span> <%= villageLevel %> cm</p>
-        <p><span class="key">Status:</span> <%= villageLevel > 130 ? "Flood Alert" : "Normal" %></p>
-
-        <div class="main">
-          <div class="red"></div>
-          <div class="green"></div>
-          <div class="orange"></div>
-        </div>
-      </div>
-      <% } %>
+      <!-- <p>Status: Flood <i class="fas fa-house-flood-water fa-xl"></i></p> -->
     </div>
-  </div>
-  <div class="footer">
-    <p>WaterLevelAlert &copy; 2024</p>
-  </div>
-</body>
+    <div class="footer">
+      <p>WaterLevelAlert &copy; 2024</p>
+    </div>
+    <script>
+      function getStatus(waterLevel, villagePeakLevel) {
+        if (waterLevel >= villagePeakLevel) {
+          return { status: "status-red", text: "Flood 🌊🚨" };
+        } else if (waterLevel >= villagePeakLevel - 20) {
+          return { status: "status-orange", text: "Warning" };
+        } else {
+          return { status: "status-green", text: "Normal" };
+        }
+      }
+
+      function updateStatus(waterLevel) {
+        const villagePeakLevels = [200, 180, 160, 140, 130, 120, 110];
+
+        for (let i = 1; i <= 7; i++) {
+          const { status, text } = getStatus(
+            waterLevel,
+            villagePeakLevels[i - 1]
+          );
+          const circle = document.getElementById("circle" + i);
+          circle.className = "status-circle " + status;
+          document.getElementById("waterLevel" + i).innerText = waterLevel;
+          document.getElementById("status" + i).innerText = text;
+        }
+      }
+
+      const waterLevel = Math.floor(Math.random() * (221 - 130)) + 130;
+      updateStatus(waterLevel);
+
+      setInterval(() => {
+        const newWaterLevel = Math.floor(Math.random() * (221 - 130)) + 130;
+        updateStatus(newWaterLevel);
+      }, 9000);
+
+
+
+        // JavaScript code to handle navigation
+    const homeLink = document.getElementById("homeLink");
+    const aboutLink = document.getElementById("aboutLink");
+    const villagesLink = document.getElementById("villagesLink");
+
+    homeLink.addEventListener("click", () => {
+      window.location.href = "/landing"; // Navigate to the home page
+    });
+
+    contactLink.addEventListener("click", () => {
+      window.location.href = "/contact"; // Navigate to the contact page
+    });
+
+    aboutLink.addEventListener("click", () => {
+      window.location.href = "/about"; // Navigate to the about page
+    });
+
+    villagesLink.addEventListener("click", () => {
+      window.location.href = "/villages"; // Navigate to the villages page
+    });
+    </script>
+  </body>
 </html>
