@@ -269,6 +269,4 @@ app.post("/submit-contact", (req, res) => {
     });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+app.listen(process.env.PORT || 4000) 
