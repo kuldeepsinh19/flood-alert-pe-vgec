@@ -1,0 +1,5 @@
+[build]
+functions = "functions/"
+publish = "views/"
+base = "/"
+command = "npm run build"
