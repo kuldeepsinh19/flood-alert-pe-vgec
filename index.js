@@ -13,7 +13,6 @@ const { doc } = require("firebase/firestore");
 const app = express();
 const port = 4000;
 
-
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyA6_Fls-zrOp1JTSvEFPNkVUf7iOeg7TXU",
@@ -49,7 +48,7 @@ app.post("/login", (req, res) => {
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const  user = userCredential.user;
+      const user = userCredential.user;
       console.log(user);
       if (email === "kuldeepsinhrajput1919@gmail.com") {
         // If the user is an admin, redirect to admin page
@@ -117,23 +116,21 @@ app.get("/", (req, res) => {
 });
 
 app.get("/landing", (req, res) => {
-    const user =  auth.currentUser
-    console.log(user.email , "1111111111111111111111111111111")
- 
+  const user = auth.currentUser;
+  console.log(user.email, "1111111111111111111111111111111");
+
   res.render("landingPage", {
     errorMessage: "",
-    email:user.email.replace('@gmail.com' , ' ')
-    
-    
+    email: user ? user.email.replace("@gmail.com", " ") : "",
   });
 });
 
 app.get("/villages", (req, res) => {
-  const user =  auth.currentUser
+  // const user =  auth.currentUser
 
   res.render("home", {
     errorMessage: "",
-    email:user.email.replace('@gmail.com' , ' ')
+    // email:user?user.email.replace('@gmail.com' , ' '):''
   });
 });
 
@@ -201,21 +198,24 @@ app.get("/village", async (req, res) => {
 
 // Call the function to update the name value
 app.get("/contact", (req, res) => {
-  const user =  auth.currentUser
+  const user = auth.currentUser;
 
   res.render("contact", {
     errorMessage: "",
-    email:user.email.replace('@gmail.com' , ' ')
+    email: user ? user.email.replace("@gmail.com", " ") : "",
   });
 });
 
 app.get("/about", (req, res) => {
-  const user =  auth.currentUser
+  const user = auth.currentUser;
+
+  // Initialize messages variable to null
+  let messages = null;
 
   res.render("about", {
     errorMessage: "",
-    email:user.email.replace('@gmail.com' , ' ')
-
+    email: user ? user.email.replace("@gmail.com", " ") : "",
+    messages: messages, // Pass the messages to the template
   });
 });
 
@@ -234,8 +234,7 @@ app.post("/forgot-password", (req, res) => {
 });
 
 app.get("/admin", (req, res) => {
-
-  const user =  auth.currentUser
+  const user = auth.currentUser;
 
   onValue(
     adminFormRef,
@@ -243,8 +242,7 @@ app.get("/admin", (req, res) => {
       const formData = snapshot.val();
       res.render("admin", {
         formData: formData,
-        email:user.email.replace('@gmail.com' , ' ')
-
+        email: user ? user.email.replace("@gmail.com", " ") : "",
       });
     },
     (errorObject) => {
@@ -255,13 +253,16 @@ app.get("/admin", (req, res) => {
 });
 app.post("/submit-contact", (req, res) => {
   const formData = req.body;
+  const user = auth.currentUser;
 
   // Push form data to Firebase Realtime Database
   push(adminFormRef, formData)
     .then(() => {
-      console.log("Form data saved successfully:", formData);
-      // Decide whether to redirect or render a new page
-      res.render("about"); // Rendering the "about" page after form submission
+      const message = "form data saved ";
+      res.render("about", {
+        email: user.email.replace("@gmail.com", " "),
+        messages: message,
+      }); // Rendering the "about" page after form submission
     })
     .catch((error) => {
       console.error("Error saving form data:", error);
@@ -269,6 +270,6 @@ app.post("/submit-contact", (req, res) => {
     });
 });
 
-app.listen(process.env.PORT || 4000) 
+app.listen(process.env.PORT || 4000);
 
 module.exports = app;
