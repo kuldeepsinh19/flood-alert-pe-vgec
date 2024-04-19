@@ -145,12 +145,11 @@
   </style>
   <body>
     <div class="navbar">
-      <ul>
-        <h2>Welcome admin</h2>
-      </ul>
+     
       <ul>
         <li><a href="#" id="homeLink" class="active">HOME</a></li>
-        <li><a href="#" id="contactLink">CONTACT</a></li>
+        <!-- <li><a href="#" id="contactLink">CONTACT</a></li> -->
+        <li><a href="#" id="adminLink">ADMIN</a></li>
         <li><a href="#" id="aboutLink">ABOUT</a></li>
         <li><a href="#" id="villagesLink">VILLAGES</a></li>
   
@@ -182,6 +181,7 @@
     const homeLink = document.getElementById("homeLink");
     const aboutLink = document.getElementById("aboutLink");
     const villagesLink = document.getElementById("villagesLink");
+    const adminLink = document.getElementById("adminLink")
 
     homeLink.addEventListener("click", () => {
       window.location.href = "/landing";
@@ -193,6 +193,9 @@
 
     villagesLink.addEventListener("click", () => {
       window.location.href = "/villages";
+    });
+    villagesLink.addEventListener("click", () => {
+      window.location.href = "/admin";
     });
   </script>
 </html>
