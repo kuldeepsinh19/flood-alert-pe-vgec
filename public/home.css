@@ -65,12 +65,23 @@ align-items: baseline;
   text-decoration: none;
   font-weight: bold;
 }
+.dec{
+  border-radius: 12px solid rgb(13, 14, 13);
+  border: 3px solid rgb(87, 167, 237);
+  background-color: #d4e4f0;
+  justify-content: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  width: 100%;
+  font-size:x-large;
+font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 
+}
 .container {
   max-width: 100%;
   margin: 70px auto 20px auto;
   padding: 0 20px;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   height: calc(100vh - 90px);
   text-align: center;
   box-sizing: border-box;
@@ -123,7 +134,7 @@ h2{
   color: #fff;
   text-align: center;
   padding: 20px 0;
-  position: fixed;
+  /* position: fixed; */
   bottom: 0;
   left: 0;
   width: 100%;

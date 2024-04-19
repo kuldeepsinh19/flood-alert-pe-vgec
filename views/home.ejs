@@ -8,137 +8,197 @@
   </head>
   <style>
     /* General Styles */
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f2f2f2;
-    color: #333;
-    overflow-x: hidden; /* Hide horizontal scrollbar */
-  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+      color: #333;
+      overflow-x: hidden; /* Hide horizontal scrollbar */
+    }
   
-  h1 {
-    font-family: Arial, sans-serif;
-    color: #3498db;
-  }
-  .email-message{
-    color:  rgb(251, 250, 250);
-   font-size: larger;
-   right: 0;
-   margin-left: 15%;
-   font-weight: bolder;
-   }
-  .navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background-color: #3498db;
-    padding: 10px;
-    color: #fff;
-    text-align: center;
-    z-index: 1000;
-  display: flex;
-  align-items: baseline;
-  }
+    h1 {
+      font-family: Arial, sans-serif;
+      color: #3498db;
+    }
   
-  .navbar ul {
-    list-style-type: none;
-    padding: 0;
-    margin-left:36%;
-  }
-  
-  @media only screen and (max-width: 600px) {
     .navbar {
-      display: block;
-      justify-content: center;
+      position: fixed;
+      top: 0;
       width: 100%;
+      background-color: #3498db;
+      padding: 10px;
+      color: #fff;
+      text-align: center;
+      z-index: 1000;
+      display: flex;
+      align-items: baseline;
     }
   
     .navbar ul {
-      margin-left:0;
+      list-style-type: none;
+      padding: 0;
+      margin-left: 36%;
     }
   
-    .email-message{
-     margin-left: auto;
-     left: 0;
+    @media only screen and (max-width: 600px) {
+      .navbar {
+        display: block;
+        justify-content: center;
+        width: 100%;
+      }
+  
+      .navbar ul {
+        margin-left: 0;
+      }
     }
-  }
   
-  .navbar ul li {
-    display: inline;
-    margin-right: 20px;
-  }
+    .navbar ul li {
+      display: inline;
+      margin-right: 20px;
+    }
   
-  .navbar ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-  }
+    .navbar ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
   
-  .container {
-    max-width: 100%;
-    margin: 70px auto 20px auto;
-    padding: 0 20px;
-    overflow-y: auto;
-    height: calc(100vh - 90px);
-    text-align: center;
-    box-sizing: border-box;
-  }
+    .container {
+      max-width: 100%;
+      margin: 70px auto 20px auto;
+      padding: 0 20px;
+      overflow-y: auto;
+      height: calc(100vh - 90px);
+      text-align: center;
+      box-sizing: border-box;
+    }
   
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjusted width */
-    gap: 30px;
-  }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjusted width */
+      gap: 30px;
+    }
   
-  .village {
-    background-color: #63adde;
-    border: 1px solid #fcfafa;
-    border-radius: 7px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added light shadow */
-  }
+    .village {
+      background-color: #63adde;
+      border: 1px solid #fcfafa;
+      border-radius: 7px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added light shadow */
+    }
   
-  .status-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .text{
-    color: #fff;
-    font-family:Arial, Helvetica, sans-serif;
-    font-weight:800;
-  }
-  .status-red {
-    background-color: red;
-  }
+    .status-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: inline-block;
+    }
   
-  h2{
-    color: #fff;
-    font-family:Arial, Helvetica, sans-serif;
-    font-weight:800;}
-  .status-orange {
-    background-color: orange;
-  }
+    .text {
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 800;
+    }
   
-  .status-green {
-    background-color: green;
-  }
+    .status-red {
+      background-color: red;
+    }
   
-  .footer {
+    h2 {
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 800;
+    }
+  
+    .status-orange {
+      background-color: orange;
+    }
+  
+    .status-green {
+      background-color: green;
+    }
+  
+    .footer {
+      background-color: #3498db;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+  
+    .detailed-view {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      z-index: 1000; /* Ensure it's above other content */
+      overflow-y: auto; /* Allow scrolling if content overflows */
+    }
+  
+    .detailed-view .container {
+      max-width: 800px;
+      margin: 100px auto; /* Center the detailed view */
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Add shadow */
+    }
+  
+    /* Button Styles */
+    .detailed-view button {
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+  
+    .detailed-view button:hover {
+      background-color: #2980b9;
+    }
+  
+    /* Close button */
+    .detailed-view button.close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: transparent;
+      color: #333;
+      font-size: 16px;
+      padding: 5px;
+      border: none;
+      cursor: pointer;
+    }
+  /* CSS for the toggle button */
+button {
     background-color: #3498db;
     color: #fff;
-    text-align: center;
-    padding: 20px 0;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-  }
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+    .detailed-view button.close-button:hover {
+      color: #666;
+    }
+  </style>
   
-   </style>
   <body>
     <div class="navbar">
       <ul>
@@ -146,31 +206,13 @@
         <li><a href="#" id="contactLink">CONTACT</a></li>
         <li><a href="#" id="aboutLink">ABOUT</a></li>
         <li><a href="#" id="villagesLink">VILLAGES</a></li>
-  
       </ul>
-     
     </div>
     <div class="container">
       <div class="dec">
-        <h1>DESCRIPTION</h1> 
+        <h1>DESCRIPTION</h1>
         <p class="decp">
-          The Water Alert System is a vital tool for monitoring water levels in
-          various villages, offering timely alerts to ensure community safety.
-          With a user-friendly interface, users, including both normal and admin
-          users, can access current water level information for six different
-          villages. Clickable buttons represent each village, enabling users to
-          view detailed status updates. Color-coded indicators - green for
-          stable conditions, yellow for warnings, and red for flood alerts -
-          provide instant insights into the severity of the situation. This
-          system facilitates proactive decision-making, empowering individuals
-          and authorities to take swift and effective measures in response to
-          fluctuating water levels, enhancing overall community resilience. The
-          system's intuitive interface fosters community engagement by enabling
-          users to access vital information with ease. Through real-time updates
-          and color-coded indicators, individuals can make informed decisions
-          and implement precautionary measures promptly. This proactive approach
-          not only mitigates risks but also fosters a sense of collective
-          responsibility, enhancing community resilience and well-being.
+          The Water Alert System is a vital tool for monitoring water levels in various villages, offering timely alerts to ensure community safety. With a user-friendly interface, users, including both normal and admin users, can access current water level information for six different villages. Clickable buttons represent each village, enabling users to view detailed status updates. Color-coded indicators - green for stable conditions, yellow for warnings, and red for flood alerts - provide instant insights into the severity of the situation. This system facilitates proactive decision-making, empowering individuals and authorities to take swift and effective measures in response to fluctuating water levels, enhancing overall community resilience. The system's intuitive interface fosters community engagement by enabling users to access vital information with ease. Through real-time updates and color-coded indicators, individuals can make informed decisions and implement precautionary measures promptly. This proactive approach not only mitigates risks but also fosters a sense of collective responsibility, enhancing community resilience and well-being.
         </p>
       </div>
       <h1>CURRENT WATER LEVEL FOR VILLAGES</h1>
@@ -183,6 +225,7 @@
           <p class="text">Status: <span id="status1"></span></p>
           <p class="text">Water Level: <span id="waterLevel1"></span></p>
           <p class="text">Peak Water Level: <span id="peakLevel1">200</span></p>
+          <button onclick="toggleDetails('khansar')">View More</button>
         </div>
         <div class="village" id="village2">
           <h2>Bhangarh</h2>
@@ -192,6 +235,8 @@
           <p class="text">Status: <span id="status2"></span></p>
           <p class="text">Water Level: <span id="waterLevel2"></span></p>
           <p class="text">Peak Water Level: <span id="peakLevel2">180</span></p>
+          <button onclick="toggleDetails('bhangarh')">View More</button>
+
         </div>
         <div class="village" id="village3">
           <h2>Virpur</h2>
@@ -201,6 +246,8 @@
           <p class="text">Status: <span id="status3"></span></p>
           <p class="text">Water Level: <span id="waterLevel3"></span></p>
           <p class="text">Peak Water Level: <span id="peakLevel3">160</span></p>
+          <button onclick="toggleDetails('virpur')">View More</button>
+
         </div>
         <div class="village" id="village4">
           <h2>Malpur</h2>
@@ -210,6 +257,8 @@
           <p class="text">Status: <span id="status4"></span></p>
           <p class="text">Water Level: <span id="waterLevel4"></span></p>
           <p class="text">Peak Water Level: <span id="peakLevel4">140</span></p>
+          <button onclick="toggleDetails('malpur')">View More</button>
+
         </div>
         <!-- New villages -->
         <div class="village" id="village5">
@@ -220,6 +269,8 @@
           <p class="text">Status: <span id="status5"></span></p>
           <p class="text">Water Level: <span id="waterLevel5"></span></p>
           <p class="text">Peak Water Level: <span id="peakLevel5">130</span></p>
+          <button onclick="toggleDetails('adarshnagar')">View More</button>
+
         </div>
         <div class="village" id="village6">
           <h2>niyamgarh</h2>
@@ -229,6 +280,8 @@
           <p class="text">Status: <span id="status6"></span></p>
           <p class="text">Water Level: <span id="waterLevel6"></span></p>
           <p class="text">Peak Water Level: <span id="peakLevel6">120</span></p>
+          <button onclick="toggleDetails('niyamgarh')">View More</button>
+
         </div>
         <div class="village" id="village7">
           <h2>sihor</h2>
@@ -238,13 +291,173 @@
           <p class="text">Status: <span id="status7"></span></p>
           <p class="text">Water Level: <span id="waterLevel7"></span></p>
           <p class="text">Peak Water Level: <span id="peakLevel7">110</span></p>
+          <button onclick="toggleDetails('sihor')">View More</button>
+
         </div>
       </div>
-      <!-- <p>Status: Flood <i class="fas fa-house-flood-water fa-xl"></i></p> -->
+        <!-- Include other village divs similarly -->
+      </div>
     </div>
-    <div class="footer">
-      <p>WaterLevelAlert &copy; 2024</p>
+   
+        <div class="detailed-view" id="khansarDetails" style="display: none;">
+          <div class="container">
+            <button onclick="closeDetails('khansar')">Close</button> <!-- Close button -->
+        
+            <h1><b>Khansar Village Details</b></h1>
+            <div class="details">
+              <p><span><b>District:</b></span> Jivona</p><hr>
+              <p><span><b>Location:</b></span> Sanjina, Chattishgarh, India</p><hr>
+              <p><span><b>Latitude:</b></span> 22.5765</p><hr>
+              <p><span><b>Longitude:</b></span> 82.8475</p><hr>
+              <p><span><b>Elevation:</b></span> 35 meters</p><hr>
+              <p><span><b>Temperature:</b></span> 31°C</p><hr>
+              <p><span><b>Rainy:</b></span> Yes</p><hr>
+              <p><span><b>Wind:</b></span> 10 km/h</p><hr>
+              <p><span><b>Sunrise:</b></span> 6:00 AM</p><hr>
+              <p><span><b>Sunset:</b></span> 6:30 PM</p><hr>
+              <p><span><b>Nearby Villages:</b></span> Village1, Village2, Ahmedabad, Vadodara, Surat</p><hr>
+              <p><span><b>Population:</b></span> 5000</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Detailed view for Bhangarh village -->
+        <div class="detailed-view" id="bhangarhDetails" style="display: none;">
+          <div class="container">
+            <button onclick="closeDetails('bhangarh')">Close</button> <!-- Close button -->
+        
+            <h1><b>Bhangarh Village Details</b></h1>
+            <div class="details">
+              <p><span><b>District:</b></span> alwar</p><hr>
+              <p><span><b>Location:</b></span> alwar, rajasthan, India</p><hr>
+              <p><span><b>Latitude:</b></span> 42.5765</p><hr>
+              <p><span><b>Longitude:</b></span> 92.8475</p><hr>
+              <p><span><b>Elevation:</b></span> 235 meters</p><hr>
+              <p><span><b>Temperature:</b></span> 51°C</p><hr>
+              <p><span><b>Rainy:</b></span>No</p><hr>
+              <p><span><b>Wind:</b></span> 19 km/h</p><hr>
+              <p><span><b>Sunrise:</b></span> 6:20 AM</p><hr>
+              <p><span><b>Sunset:</b></span> 6:30 PM</p><hr>
+              <p><span><b>Nearby Villages:</b></span> churu, chelari, sidoni, kedonaj</p><hr>
+              <p><span><b>Population:</b></span> 55000</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Detailed view for Virpur village -->
+        <div class="detailed-view" id="virpurDetails" style="display: none;">
+          <div class="container">
+            <button onclick="closeDetails('virpur')">Close</button> <!-- Close button -->
+        
+            <h1><b>Virpur Village Details</b></h1>
+            <div class="details">
+              <p><span><b>District:</b></span> Sangli District</p><hr>
+              <p><span><b>Location:</b></span> Virpur, Maharashtra, India</p><hr>
+              <p><span><b>Latitude:</b></span> 17.3568</p><hr>
+              <p><span><b>Longitude:</b></span> 74.1623</p><hr>
+              <p><span><b>Elevation:</b></span> 40 meters</p><hr>
+              <p><span><b>Temperature:</b></span> 29°C</p><hr>
+              <p><span><b>Rainy:</b></span> Yes</p><hr>
+              <p><span><b>Wind:</b></span> 14 km/h</p><hr>
+              <p><span><b>Sunrise:</b></span> 6:20 AM</p><hr>
+              <p><span><b>Sunset:</b></span> 6:40 PM</p><hr>
+              <p><span><b>Nearby Villages:</b></span> Miraj, Kavathe-Mahankal, Atpadi</p><hr>
+              <p><span><b>Population:</b></span> 8000</p>
+            </div>
+          </div>
+        </div>
+        
+<div class="detailed-view" id="malpurDetails" style="display: none;">
+  <div class="container">
+    <button onclick="closeDetails('malpur')">Close</button> <!-- Close button -->
+
+    <h1>Malpur Village Details</h1>
+    <div class="details">
+      <p><span>District:</span> Surendranagar District</p><hr>
+      <p><span>Location:</span> Malpur, Gujarat, India</p><hr>
+      <p><span>Latitude:</span> 23.8994</p><hr>
+      <p><span>Longitude:</span> 72.6079</p><hr>
+      <p><span>Elevation:</span> 90 meters</p><hr>
+      <p><span>Temperature:</span> 30°C</p><hr>
+      <p><span>Rainy:</span> No</p><hr>
+      <p><span>Wind:</span> 12 km/h</p><hr>
+      <p><span>Sunrise:</span> 6:15 AM</p><hr>
+      <p><span>Sunset:</span> 6:35 PM</p><hr>
+      <p><span>Nearby Villages:</span> Dhrangadhra, Lakhtar, Thangadh</p><hr>
+      <p><span>Population:</span> 6000</p>
     </div>
+  </div>
+</div>
+
+<!-- Detailed view for Adarshnagar village -->
+<div class="detailed-view" id="adarshnagarDetails" style="display: none;">
+  <div class="container">
+    <button onclick="closeDetails('adarshnagar')">Close</button> <!-- Close button -->
+
+    <h1>Adarshnagar Village Details</h1>
+    <div class="details">
+      <p><span>District:</span> Jaipur District</p><hr>
+      <p><span>Location:</span> Adarshnagar, Rajasthan, India</p><hr>
+      <p><span>Latitude:</span> 26.9238</p><hr>
+      <p><span>Longitude:</span> 75.8269</p><hr>
+      <p><span>Elevation:</span> 95 meters</p><hr>
+      <p><span>Temperature:</span> 32°C</p><hr>
+      <p><span>Rainy:</span> Yes</p><hr>
+      <p><span>Wind:</span> 18 km/h</p><hr>
+      <p><span>Sunrise:</span> 6:10 AM</p><hr>
+      <p><span>Sunset:</span> 6:30 PM</p><hr>
+      <p><span>Nearby Villages:</span> Chaksu, Amer, Bassi</p><hr>
+      <p><span>Population:</span> 7500</p>
+    </div>
+  </div>
+</div>
+
+<!-- Detailed view for Niyamgarh village -->
+<div class="detailed-view" id="niyamgarhDetails" style="display: none;">
+  <div class="container">
+    <button onclick="closeDetails('niyamgarh')">Close</button> <!-- Close button -->
+
+    <h1>Niyamgarh Village Details</h1>
+    <div class="details">
+      <p><span>District:</span> Cuttack District</p><hr>
+      <p><span>Location:</span> Niyamgarh, Odisha, India</p><hr>
+      <p><span>Latitude:</span> 20.4648</p><hr>
+      <p><span>Longitude:</span> 85.8790</p><hr>
+      <p><span>Elevation:</span> 65 meters</p><hr>
+      <p><span>Temperature:</span> 29°C</p><hr>
+      <p><span>Rainy:</span> Yes</p><hr>
+      <p><span>Wind:</span> 14 km/h</p><hr>
+      <p><span>Sunrise:</span> 6:08 AM</p><hr>
+      <p><span>Sunset:</span> 6:28 PM</p><hr>
+      <p><span>Nearby Villages:</span> Salepur, Athagarh, Kantapada</p><hr>
+      <p><span>Population:</span> 7000</p>
+    </div>
+  </div>
+</div>
+
+<!-- Detailed view for Sihor village -->
+<div class="detailed-view" id="sihorDetails" style="display: none;">
+  <div class="container">
+    <button onclick="closeDetails('sihor')">Close</button> <!-- Close button -->
+
+    <h1>Sihor Village Details</h1>
+    <div class="details">
+      <p><span>District:</span> Bhavnagar District</p><hr>
+      <p><span>Location:</span> Sihor, Gujarat, India</p><hr>
+      <p><span>Latitude:</span> 21.7032</p><hr>
+      <p><span>Longitude:</span> 71.9722</p><hr>
+      <p><span>Elevation:</span> 70 meters</p><hr>
+      <p><span>Temperature:</span> 30°C</p><hr>
+      <p><span>Rainy:</span> No</p><hr>
+      <p><span>Wind:</span> 13 km/h</p><hr>
+      <p><span>Sunrise:</span> 6:07 AM</p><hr>
+      <p><span>Sunset:</span> 6:27 PM</p><hr>
+      <p><span>Nearby Villages:</span> Gadhada, Palitana, Ghogha</p><hr>
+      <p><span>Population:</span> 6500</p>
+    </div>
+  </div>
+</div>
+
     <script>
       function getStatus(waterLevel, villagePeakLevel) {
         if (waterLevel >= villagePeakLevel) {
@@ -260,10 +473,7 @@
         const villagePeakLevels = [200, 180, 160, 140, 130, 120, 110];
 
         for (let i = 1; i <= 7; i++) {
-          const { status, text } = getStatus(
-            waterLevel,
-            villagePeakLevels[i - 1]
-          );
+          const { status, text } = getStatus(waterLevel, villagePeakLevels[i - 1]);
           const circle = document.getElementById("circle" + i);
           circle.className = "status-circle " + status;
           document.getElementById("waterLevel" + i).innerText = waterLevel;
@@ -279,28 +489,35 @@
         updateStatus(newWaterLevel);
       }, 9000);
 
+      // Function to toggle the detailed view of a village
+      function toggleDetails(villageId) {
+        const detailsDiv = document.getElementById(villageId + "Details");
+        detailsDiv.style.display = detailsDiv.style.display === "none" ? "block" : "none";
+      }
+      function closeDetails(villageId) {
+    const detailsDiv = document.getElementById(villageId + "Details");
+    detailsDiv.style.display = "none";
+  }
+      // JavaScript code to handle navigation
+      const homeLink = document.getElementById("homeLink");
+      const aboutLink = document.getElementById("aboutLink");
+      const villagesLink = document.getElementById("villagesLink");
 
+      homeLink.addEventListener("click", () => {
+        window.location.href = "/landing"; // Navigate to the home page
+      });
 
-        // JavaScript code to handle navigation
-    const homeLink = document.getElementById("homeLink");
-    const aboutLink = document.getElementById("aboutLink");
-    const villagesLink = document.getElementById("villagesLink");
+      contactLink.addEventListener("click", () => {
+        window.location.href = "/contact"; // Navigate to the contact page
+      });
 
-    homeLink.addEventListener("click", () => {
-      window.location.href = "/landing"; // Navigate to the home page
-    });
+      aboutLink.addEventListener("click", () => {
+        window.location.href = "/about"; // Navigate to the about page
+      });
 
-    contactLink.addEventListener("click", () => {
-      window.location.href = "/contact"; // Navigate to the contact page
-    });
-
-    aboutLink.addEventListener("click", () => {
-      window.location.href = "/about"; // Navigate to the about page
-    });
-
-    villagesLink.addEventListener("click", () => {
-      window.location.href = "/villages"; // Navigate to the villages page
-    });
+      villagesLink.addEventListener("click", () => {
+        window.location.href = "/villages"; // Navigate to the villages page
+      });
     </script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -47,7 +47,16 @@
 }
 
 
-
+.dec{
+  border-radius: 12px solid rgb(13, 14, 13);
+  border: 3px solid rgb(14, 14, 15);
+  background-color: #96c6ea;
+  color: rgb(214, 36, 36);
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
+  font-size:x-large;
+font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;}
 .container {
     max-width: 800px;
     margin: 80px auto 20px auto; /* Adjusted margin for navbar */
@@ -64,30 +73,38 @@
 }
 
 .contact-form {
-    background-color: #fff;
+    background-color: #f9f9f9;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease;
 }
 
 .contact-form h2 {
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px;
 }
 
 .contact-form label {
     display: block;
     margin-bottom: 10px;
+    font-weight: bold;
+    color: #555;
 }
 
 .contact-form input[type="text"],
 .contact-form input[type="email"],
+.contact-form input[type="tel"],
 .contact-form textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
 }
 
 .contact-form textarea {
@@ -95,17 +112,31 @@
 }
 
 .contact-form input[type="submit"] {
-    background-color: #007bff;
+    background-color: #3498db;
     color: #fff;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .contact-form input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #2980b9;
 }
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
  </style>
 
@@ -122,7 +153,14 @@
           <p class="email-message">welcome, <%=  email %></p>
           <% } %>
       </div>
+
+      
     <div class="container">
+        <div class="dec">
+            <p class="decp">
+              Submit this form with your query 
+            </p>
+        </div>
         <h1>Get In Touch With Us</h1>
         <div class="content">
             <div class="contact-form">
@@ -131,18 +169,22 @@
                 <form action="/submit-contact" method="POST">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" required>
-
+                
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required>
-
+                
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" required>
+                
                     <label for="subject">Subject</label>
                     <input type="text" id="subject" name="subject" required>
-
+                
                     <label for="message">Message</label>
                     <textarea id="message" name="message" rows="5" required></textarea>
-
+                
                     <input type="submit" value="Submit">
                 </form>
+
             </div>
         </div>
     </div>
@@ -170,4 +212,213 @@
       window.location.href = "/villages"; // Navigate to the villages page
     });
 </script>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Water Alert App</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        background-image: url("https://source.unsplash.com/1600x900/?flood");
+        background-size: cover;
+        background-position: center;
+        color: #333;
+        overflow-x: hidden;
+      }
+
+      .navbar {
+        background-color: rgba(52, 152, 219, 0.8);
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 10px;
+        color: #fff;
+        text-align: center;
+        z-index: 1000;
+      }
+
+      .navbar ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .navbar ul li {
+        display: inline;
+        margin-right: 20px;
+      }
+
+      .navbar ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .navbar ul li a:hover {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 80px auto 20px auto;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .container h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .contact-form {
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease;
+        background-color: rgba(255, 255, 255, 0.9);
+      }
+
+      .contact-form h2 {
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 24px;
+      }
+
+      .contact-form label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      .contact-form input[type="text"],
+      .contact-form input[type="email"],
+      .contact-form input[type="tel"],
+      .contact-form textarea {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+        font-family: "Roboto", sans-serif;
+      }
+
+      .contact-form textarea {
+        resize: vertical;
+      }
+
+      .contact-form input[type="submit"] {
+        background-color: rgba(52, 152, 219, 1);
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-family: "Roboto", sans-serif;
+      }
+
+      .contact-form input[type="submit"]:hover {
+        background-color: rgba(52, 152, 219, 0.8);
+      }
+
+      /* Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <ul>
+        <li><a href="#" id="homeLink" class="active">HOME</a></li>
+        <li><a href="#" id="contactLink">CONTACT</a></li>
+        <li><a href="#" id="aboutLink">ABOUT</a></li>
+        <li><a href="#" id="villagesLink">VILLAGES</a></li>
+      </ul>
+    </div>
+
+    <div class="container">
+      <h1>Get In Touch With Us</h1>
+      <div class="content">
+        <div class="contact-form">
+          <h2>Contact Us</h2>
+          <form action="/submit-contact" method="POST">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required />
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required />
+
+            <label for="phone">Phone</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              required
+              pattern="[0-9]{10}"
+              title="Please enter a 10-digit phone number"
+            />
+            <label for="subject">Subject</label>
+
+            <input type="text" id="subject" name="subject" required />
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // JavaScript code
+      const homeLink = document.getElementById("homeLink");
+      const contactLink = document.getElementById("contactLink");
+      const aboutLink = document.getElementById("aboutLink");
+      const villagesLink = document.getElementById("villagesLink");
+
+      homeLink.addEventListener("click", () => {
+        window.location.href = "/landing"; // Navigate to the home page
+      });
+
+      contactLink.addEventListener("click", () => {
+        window.location.href = "/contact"; // Navigate to the contact page
+      });
+
+      aboutLink.addEventListener("click", () => {
+        window.location.href = "/about"; // Navigate to the about page
+      });
+
+      villagesLink.addEventListener("click", () => {
+        window.location.href = "/villages"; // Navigate to the villages page
+      });
+    </script>
+  </body>
 </html>

@@ -134,66 +134,66 @@ app.get("/villages", (req, res) => {
 });
 
 // const generateRandomWaterLevel = () => Math.round(Math.random() * 20 + 80);
-const generateRandomWaterLevel = () => Math.round(Math.random() * 20 + 180);
+// const generateRandomWaterLevel = () => Math.round(Math.random() * 20 + 180);
 
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+// const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const saveRandomValueToDatabase = async (
-  villageName,
-  monthKey,
-  dayKey,
-  hour,
-  minute
-) => {
-  const timeKey = `${hour.toString().padStart(2, "0")}:${minute
-    .toString()
-    .padStart(2, "0")}`;
-  const randomValue = generateRandomWaterLevel();
+// const saveRandomValueToDatabase = async (
+//   villageName,
+//   monthKey,
+//   dayKey,
+//   hour,
+//   minute
+// ) => {
+//   const timeKey = `${hour.toString().padStart(2, "0")}:${minute
+//     .toString()
+//     .padStart(2, "0")}`;
+//   const randomValue = generateRandomWaterLevel();
 
-  // Save the value to the database under the specified village, month, day, hour, and minute
-  try {
-    const userRef = ref(
-      database,
-      `VillageList/${villageName}/${monthKey}/${dayKey}/${timeKey}`
-    );
-    // usersRef.child('yourVillageName').update({ name: newName })
+//   // Save the value to the database under the specified village, month, day, hour, and minute
+//   try {
+//     const userRef = ref(
+//       database,
+//       `VillageList/${villageName}/${monthKey}/${dayKey}/${timeKey}`
+//     );
+//     // usersRef.child('yourVillageName').update({ name: newName })
 
-    await set(userRef, randomValue);
-    console.log(
-      `${villageName}/${monthKey}/${dayKey}/${timeKey}:`,
-      randomValue,
-      "Value added to the database"
-    );
-  } catch (error) {
-    console.log("Error saving value to the database:", error);
-  }
-};
-app.get("/village", async (req, res) => {
-  const villageName = "mangarh"; // Replace with the actual village name
+//     await set(userRef, randomValue);
+//     console.log(
+//       `${villageName}/${monthKey}/${dayKey}/${timeKey}:`,
+//       randomValue,
+//       "Value added to the database"
+//     );
+//   } catch (error) {
+//     console.log("Error saving value to the database:", error);
+//   }
+// };
+// app.get("/village", async (req, res) => {
+//   const villageName = "mangarh"; // Replace with the actual village name
 
-  for (let month = 1; month <= 12; month++) {
-    const monthKey = `month${month}`;
+//   for (let month = 1; month <= 12; month++) {
+//     const monthKey = `month${month}`;
 
-    for (let day = 1; day <= 30; day++) {
-      const dayKey = `day${day}`;
+//     for (let day = 1; day <= 30; day++) {
+//       const dayKey = `day${day}`;
 
-      for (let hour = 0; hour < 24; hour++) {
-        for (let minute = 0; minute < 60; minute += 10) {
-          await saveRandomValueToDatabase(
-            villageName,
-            monthKey,
-            dayKey,
-            hour,
-            minute
-          );
-          await wait(1); // Adjust the wait time here (in milliseconds)
-        }
-      }
-    }
-  }
+//       for (let hour = 0; hour < 24; hour++) {
+//         for (let minute = 0; minute < 60; minute += 10) {
+//           await saveRandomValueToDatabase(
+//             villageName,
+//             monthKey,
+//             dayKey,
+//             hour,
+//             minute
+//           );
+//           await wait(1); // Adjust the wait time here (in milliseconds)
+//         }
+//       }
+//     }
+//   }
 
-  res.send("Values added to the database.");
-});
+//   res.send("Values added to the database.");
+// });
 
 // Call the function to update the name value
 app.get("/contact", (req, res) => {

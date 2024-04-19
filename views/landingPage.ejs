@@ -1,206 +1,358 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ABOUT WATER LEVEL ALERT</title>
-    <link rel="stylesheet" href="home.css" />
-  </head>
-  <style>
-    /* General Styles */
-  body {
-    font-family: Arial, sans-serif;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WATER LEVEL ALERT</title>
+    <style>
+        /* General Styles */
+     /* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f2f2f2;
     color: #333;
     overflow-x: hidden; /* Hide horizontal scrollbar */
-  }
-  
-  h1 {
-    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 60px; /* Adjust the height based on the navbar height */
+}
+
+h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #3498db;
-  }
-  .email-message{
-    color:  rgb(251, 250, 250);
-   font-size: larger;
-   right: 0;
-   margin-left: 15%;
-   font-weight: bolder;
-   }
-  .navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background-color: #3498db;
-    padding: 10px;
-    color: #fff;
-    text-align: center;
-    z-index: 1000;
-  display: flex;
-  align-items: baseline;
-  }
-  
-  .navbar ul {
-    list-style-type: none;
-    padding: 0;
-    margin-left:36%;
-  }
-  
-  @media only screen and (max-width: 600px) {
-    .navbar {
-      display: block;
-      justify-content: center;
-      width: 100%;
-    }
-  
+    margin-top: 20px; /* Adjusted margin-top */
+    font-size: 2rem;
+}
+
+        .email-message {
+            color: rgb(251, 250, 250);
+            font-size: larger;
+            right: 0;
+            margin-left: auto;
+            font-weight: bolder;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #3498db;
+            padding: 10px;
+            color: #fff;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        .navbar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .dec {
+            border-radius: 12px solid rgb(13, 14, 13);
+            border: 3px solid rgb(87, 167, 237);
+            background-color: #d4e4f0;
+            justify-content: center;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            width: 100%;
+            font-size: 1.2rem;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        .container {
+            flex: 1;
+            max-width: 100%;
+            margin: 20px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .village {
+            background-color: #63adde;
+            border: 1px solid #fcfafa;
+            border-radius: 7px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .text {
+            color: #fff;
+            font-weight: 800;
+        }
+
+        .village h2 { /* CSS for village h2 */
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: 800;
+            margin-top: 10px; /* Adjust margin-top as needed */
+        }
+
+        h2.heading  { /* CSS for heading h2 */
+            font-size: 2rem;
+            color: #3498db;
+            margin-top: 40px;
+        }
+
+        h1.about-heading {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #3498db;
+            margin-top: 30px; /* Increase the margin-top to create space between the navbar and h1 */
+            font-size: 2rem;
+        }
+
+        .footer {
+            background-color: #3498db;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        /* Media Queries for Responsiveness */
+       /* Media Queries for Responsiveness */
+@media only screen and (max-width: 600px) {
     .navbar ul {
-      margin-left:0;
+        margin-left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
-  
-    .email-message{
-     margin-left: auto;
-     left: 0;
+
+    .navbar ul li {
+        margin-right: 0;
+        margin-bottom: 10px;
     }
-  }
-  
-  .navbar ul li {
-    display: inline;
-    margin-right: 20px;
-  }
-  
-  .navbar ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .container {
-    max-width: 100%;
-    margin: 70px auto 20px auto;
-    padding: 0 20px;
-    overflow-y: auto;
-    height: calc(100vh - 90px);
-    text-align: center;
-    box-sizing: border-box;
-  }
-  
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjusted width */
-    gap: 30px;
-  }
-  
-  .village {
-    background-color: #63adde;
-    border: 1px solid #fcfafa;
-    border-radius: 7px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added light shadow */
-  }
-  
-  .status-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .text{
-    color: #fff;
-    font-family:Arial, Helvetica, sans-serif;
-    font-weight:800;
-  }
-  .status-red {
-    background-color: red;
-  }
-  
-  h2{
-    color: #fff;
-    font-family:Arial, Helvetica, sans-serif;
-    font-weight:800;}
-  .status-orange {
-    background-color: orange;
-  }
-  
-  .status-green {
-    background-color: green;
-  }
-  
-  .footer {
-    background-color: #3498db;
-    color: #fff;
-    text-align: center;
-    padding: 20px 0;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-  }
-  
-   </style>
-  <body>
-    <div class="navbar">
-      <ul>
+
+    .email-message {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+    }
+ h1.about-heading {
+        margin-top: 115px; /* Adjusted margin-top for mobile */
+    } 
+    h1 {
+        font-size: 1.8rem; /* Adjust h1 font-size for smaller screens */
+        margin-top: 40px; /* Adjust h1 margin-top for smaller screens */
+        margin-bottom: 20px; /* Add margin at the bottom to create space */
+        text-align: center; /* Center align the text */
+    }
+
+    h2.heading {
+        font-size: 1.8rem; /* Adjust h2.heading font-size for smaller screens */
+        margin-top: 20px; /* Adjust h2.heading margin-top for smaller screens */
+    }
+
+    .village h2 {
+        font-size: 1.3rem; /* Adjust village h2 font-size for smaller screens */
+        margin-top: 5px; /* Adjust village h2 margin-top for smaller screens */
+    }
+
+    .decp {
+        font-size: 1rem; /* Adjust font size for paragraph */
+    }
+}
+
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <ul>
         <li><a href="#" id="homeLink" class="active">HOME</a></li>
         <li><a href="#" id="contactLink">CONTACT</a></li>
         <li><a href="#" id="aboutLink">ABOUT</a></li>
         <li><a href="#" id="villagesLink">VILLAGES</a></li>
-  
-      </ul>
-      <% if(email) { %>
-        <p class="email-message">welcome, <%=  email %></p>
-        <% } %>
-    </div>
-    <div class="container">
-        <h1>About Water Levels in Indian Villages</h1>
-      <div class="dec">
-        <p class="decp">
-        
-            Water levels in Indian villages are crucial for various aspects of life, including agriculture,
-            drinking water supply, and overall community well-being. The geography and topography of India
-            make water management a significant challenge, with many villages facing water scarcity or
-            flooding issues depending on the region and season. Understanding and monitoring water levels
-            in these villages are essential for sustainable development and disaster management efforts.
-        </p>
-    </div>
+    </ul>
+    <!-- Add the email message here if needed -->
+    <!-- <div class="menu-toggle">&#9776;</div> -->
+</div>
+<div class="container">
+    <h1 class="about-heading">About Water Levels in Indian Villages</h1>
     <div class="dec">
-
         <p class="decp">
-            The Water Alert App provides real-time information on water levels in different villages across
-                    India, empowering communities and authorities to make informed decisions and take proactive
-                    measures to mitigate risks and ensure water security.
+            Water levels in Indian villages are crucial for various aspects of
+            life, including agriculture, drinking water supply, and overall
+            community well-being. The geography and topography of India make water
+            management a significant challenge, with many villages facing water
+            scarcity or flooding issues depending on the region and season.
+            Understanding and monitoring water levels in these villages are
+            essential for sustainable development and disaster management efforts.
+
+            <br />
+            The Water Alert App provides real-time information on water levels in
+            different villages across India, empowering communities and
+            authorities to make informed decisions and take proactive measures to
+            mitigate risks and ensure water security.
         </p>
     </div>
-    
-  
-
-    <div class="footer">
-      <p>WaterLevelAlert &copy; 2024</p>
+    <h2 class="heading">Well-known Areas of Gujarat</h2>
+    <!-- Heading h2 -->
+    <div class="grid" id="villageContainer">
+        <!-- Village data will be populated here -->
     </div>
-  </body>
-  <script>
-    // Get the navbar links by their IDs
+</div>
+<div class="footer">
+    <p>WaterLevelAlert &copy; 2024</p>
+</div>
+<script>
+    const villagesData = {
+        villages: [
+            {
+                name: "Bhadran",
+                district: "Mahisagar",
+                location: "Mahisagar, Gujarat, India",
+                elevation: 25,
+                temperature: 35,
+                rainy: false,
+            },
+            {
+                name: "Mundra",
+                district: "Kutch",
+                location: "Mundra, Gujarat, India",
+                elevation: 10,
+                temperature: 40,
+                rainy: true,
+            },
+            {
+                name: "Anandpur",
+                district: "Surat",
+                location: "Surat, Gujarat, India",
+                elevation: 15,
+                temperature: 37,
+                rainy: false,
+            },
+            {
+                name: "Dwarka",
+                district: "Devbhoomi Dwarka",
+                location: "Devbhoomi Dwarka, Gujarat, India",
+                elevation: 20,
+                temperature: 33,
+                rainy: true,
+            },
+            {
+                name: "Himmatnagar",
+                district: "Sabarkantha",
+                location: "Sabarkantha, Gujarat, India",
+                elevation: 40,
+                temperature: 29,
+                rainy: true,
+            },
+            {
+                name: "Vadnagar",
+                district: "Mehsana",
+                location: "Mehsana, Gujarat, India",
+                elevation: 30,
+                temperature: 32,
+                rainy: false,
+            },
+            {
+                name: "Porbandar",
+                district: "Porbandar",
+                location: "Porbandar, Gujarat, India",
+                elevation: 5,
+                temperature: 38,
+                rainy: false,
+            },
+            {
+                name: "Vijapur",
+                district: "Patan",
+                location: "Patan, Gujarat, India",
+                elevation: 35,
+                temperature: 31,
+                rainy: true,
+            },
+            {
+                name: "Ambaji",
+                district: "Banaskantha",
+                location: "Banaskantha, Gujarat, India",
+                elevation: 45,
+                temperature: 27,
+                rainy: false,
+            },
+            {
+                name: "Ankleshwar",
+                district: "Bharuch",
+                location: "Bharuch, Gujarat, India",
+                elevation: 25,
+                temperature: 34,
+                rainy: true,
+            },
+            // Add more village data here if needed
+        ],
+    };
+
+    const villageContainer = document.getElementById("villageContainer");
+
+    villagesData.villages.forEach((village) => {
+        const villageDiv = document.createElement("div");
+        villageDiv.classList.add("village");
+
+        villageDiv.innerHTML = `
+            <h2 class="village-name">${village.name}</h2> <!-- Village h2 -->
+            <p><strong>Location:</strong> ${village.location}</p>
+            <p><strong>District:</strong> ${village.district}</p>
+            <p><strong>Elevation:</strong> ${village.elevation} meters</p>
+            <p><strong>Temperature:</strong> ${village.temperature}°C</p>
+            <p><strong>Rainy Weather:</strong> ${village.rainy ? "Yes" : "No"}</p>
+        `;
+
+        villageContainer.appendChild(villageDiv);
+    });
+
+ 
+
+    // JavaScript code to handle navigation
     const homeLink = document.getElementById("homeLink");
     const contactLink = document.getElementById("contactLink");
     const aboutLink = document.getElementById("aboutLink");
     const villagesLink = document.getElementById("villagesLink");
 
-    // Add click event listeners to each navbar link
     homeLink.addEventListener("click", () => {
-      window.location.href = "/landing"; // Navigate to the home page
+        window.location.href = "/landing"; // Navigate to the home page
     });
 
     contactLink.addEventListener("click", () => {
-      window.location.href = "/contact"; // Navigate to the contact page
+        window.location.href = "/contact"; // Navigate to the contact page
     });
 
     aboutLink.addEventListener("click", () => {
-      window.location.href = "/about"; // Navigate to the about page
+        window.location.href = "/about"; // Navigate to the about page
     });
 
     villagesLink.addEventListener("click", () => {
-      window.location.href = "/villages"; // Navigate to the villages page
+        window.location.href = "/villages"; // Navigate to the villages page
     });
-  </script>
+</script>
+</body>
 </html>
