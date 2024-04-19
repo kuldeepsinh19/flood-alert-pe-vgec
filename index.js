@@ -64,7 +64,7 @@ app.post("/login", (req, res) => {
       } else if (signInError.code === "auth/wrong-password") {
         errorMessage = "Invalid password. Please try again.";
       } else if (signInError.code === "auth/invalid-credential") {
-        errorMessage = "invalid credentials ";
+        errorMessage = "invalid credentials or just make sure you have signed up";
       } else if (signInError.code === "auth/invalid-email") {
         errorMessage = "invalid email ";
       } else {
@@ -117,7 +117,6 @@ app.get("/", (req, res) => {
 
 app.get("/landing", (req, res) => {
   const user = auth.currentUser;
-  console.log(user.email, "1111111111111111111111111111111");
 
   res.render("landingPage", {
     errorMessage: "",
