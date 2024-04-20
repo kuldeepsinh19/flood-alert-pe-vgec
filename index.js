@@ -132,7 +132,7 @@ app.get("/villages", (req, res) => {
     // email:user?user.email.replace('@gmail.com' , ' '):''
   });
 });
-
+  
 // const generateRandomWaterLevel = () => Math.round(Math.random() * 20 + 80);
 // const generateRandomWaterLevel = () => Math.round(Math.random() * 20 + 180);
 
