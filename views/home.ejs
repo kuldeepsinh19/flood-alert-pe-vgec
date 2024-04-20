@@ -218,14 +218,14 @@ button:hover {
       <h1>CURRENT WATER LEVEL FOR VILLAGES</h1>
       <div class="grid">
         <div class="village" id="village1">
-          <h2>Khansar</h2>
+          <h2>belapur</h2>
           <hr />
           <br />
           <div class="status-circle" id="circle1"></div>
           <p class="text">Status: <span id="status1"></span></p>
           <p class="text">Water Level: <span id="waterLevel1"></span></p>
           <p class="text">Peak Water Level: <span id="peakLevel1">200</span></p>
-          <button onclick="toggleDetails('khansar')">View More</button>
+          <button onclick="toggleDetails('belapur')">View More</button>
         </div>
         <div class="village" id="village2">
           <h2>Bhangarh</h2>
@@ -239,25 +239,25 @@ button:hover {
 
         </div>
         <div class="village" id="village3">
-          <h2>Virpur</h2>
+          <h2>khanpur</h2>
           <hr />
           <br />
           <div class="status-circle" id="circle3"></div>
           <p class="text">Status: <span id="status3"></span></p>
           <p class="text">Water Level: <span id="waterLevel3"></span></p>
           <p class="text">Peak Water Level: <span id="peakLevel3">160</span></p>
-          <button onclick="toggleDetails('virpur')">View More</button>
+          <button onclick="toggleDetails('khanpur')">View More</button>
 
         </div>
         <div class="village" id="village4">
-          <h2>Malpur</h2>
+          <h2>mangarh</h2>
           <hr />
           <br />
           <div class="status-circle" id="circle4"></div>
           <p class="text">Status: <span id="status4"></span></p>
           <p class="text">Water Level: <span id="waterLevel4"></span></p>
           <p class="text">Peak Water Level: <span id="peakLevel4">140</span></p>
-          <button onclick="toggleDetails('malpur')">View More</button>
+          <button onclick="toggleDetails('mangarh')">View More</button>
 
         </div>
         <!-- New villages -->
@@ -273,14 +273,14 @@ button:hover {
 
         </div>
         <div class="village" id="village6">
-          <h2>niyamgarh</h2>
+          <h2>sarai</h2>
           <hr />
           <br />
           <div class="status-circle" id="circle6"></div>
           <p class="text">Status: <span id="status6"></span></p>
           <p class="text">Water Level: <span id="waterLevel6"></span></p>
           <p class="text">Peak Water Level: <span id="peakLevel6">120</span></p>
-          <button onclick="toggleDetails('niyamgarh')">View More</button>
+          <button onclick="toggleDetails('sarai')">View More</button>
 
         </div>
         <div class="village" id="village7">
@@ -299,11 +299,11 @@ button:hover {
       </div>
     </div>
    
-        <div class="detailed-view" id="khansarDetails" style="display: none;">
+        <div class="detailed-view" id="belapurDetails" style="display: none;">
           <div class="container">
-            <button onclick="closeDetails('khansar')">Close</button> <!-- Close button -->
+            <button onclick="closeDetails('belapur')">Close</button> <!-- Close button -->
         
-            <h1><b>Khansar Village Details</b></h1>
+            <h1><b>belapur Village Details</b></h1>
             <div class="details">
               <p><span><b>District:</b></span> Jivona</p><hr>
               <p><span><b>Location:</b></span> Sanjina, Chattishgarh, India</p><hr>
@@ -315,7 +315,7 @@ button:hover {
               <p><span><b>Wind:</b></span> 10 km/h</p><hr>
               <p><span><b>Sunrise:</b></span> 6:00 AM</p><hr>
               <p><span><b>Sunset:</b></span> 6:30 PM</p><hr>
-              <p><span><b>Nearby Villages:</b></span> Village1, Village2, Ahmedabad, Vadodara, Surat</p><hr>
+              <p><span><b>Nearby Villages:</b></span>  dinoji, peron, kadidoki</p><hr>
               <p><span><b>Population:</b></span> 5000</p>
             </div>
           </div>
@@ -344,15 +344,15 @@ button:hover {
           </div>
         </div>
         
-        <!-- Detailed view for Virpur village -->
-        <div class="detailed-view" id="virpurDetails" style="display: none;">
+        <!-- Detailed view for khanpur village -->
+        <div class="detailed-view" id="khanpurDetails" style="display: none;">
           <div class="container">
-            <button onclick="closeDetails('virpur')">Close</button> <!-- Close button -->
+            <button onclick="closeDetails('khanpur')">Close</button> <!-- Close button -->
         
-            <h1><b>Virpur Village Details</b></h1>
+            <h1><b>khanpur Village Details</b></h1>
             <div class="details">
               <p><span><b>District:</b></span> Sangli District</p><hr>
-              <p><span><b>Location:</b></span> Virpur, Maharashtra, India</p><hr>
+              <p><span><b>Location:</b></span> khanpur, Maharashtra, India</p><hr>
               <p><span><b>Latitude:</b></span> 17.3568</p><hr>
               <p><span><b>Longitude:</b></span> 74.1623</p><hr>
               <p><span><b>Elevation:</b></span> 40 meters</p><hr>
@@ -367,14 +367,14 @@ button:hover {
           </div>
         </div>
         
-<div class="detailed-view" id="malpurDetails" style="display: none;">
+<div class="detailed-view" id="mangarhDetails" style="display: none;">
   <div class="container">
-    <button onclick="closeDetails('malpur')">Close</button> <!-- Close button -->
+    <button onclick="closeDetails('mangarh')">Close</button> <!-- Close button -->
 
-    <h1>Malpur Village Details</h1>
+    <h1>mangarh Village Details</h1>
     <div class="details">
       <p><span>District:</span> Surendranagar District</p><hr>
-      <p><span>Location:</span> Malpur, Gujarat, India</p><hr>
+      <p><span>Location:</span> mangarh, Gujarat, India</p><hr>
       <p><span>Latitude:</span> 23.8994</p><hr>
       <p><span>Longitude:</span> 72.6079</p><hr>
       <p><span>Elevation:</span> 90 meters</p><hr>
@@ -412,15 +412,15 @@ button:hover {
   </div>
 </div>
 
-<!-- Detailed view for Niyamgarh village -->
-<div class="detailed-view" id="niyamgarhDetails" style="display: none;">
+<!-- Detailed view for sarai village -->
+<div class="detailed-view" id="saraiDetails" style="display: none;">
   <div class="container">
-    <button onclick="closeDetails('niyamgarh')">Close</button> <!-- Close button -->
+    <button onclick="closeDetails('sarai')">Close</button> <!-- Close button -->
 
-    <h1>Niyamgarh Village Details</h1>
+    <h1>sarai Village Details</h1>
     <div class="details">
       <p><span>District:</span> Cuttack District</p><hr>
-      <p><span>Location:</span> Niyamgarh, Odisha, India</p><hr>
+      <p><span>Location:</span> sarai, Odisha, India</p><hr>
       <p><span>Latitude:</span> 20.4648</p><hr>
       <p><span>Longitude:</span> 85.8790</p><hr>
       <p><span>Elevation:</span> 65 meters</p><hr>
