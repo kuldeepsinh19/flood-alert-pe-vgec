@@ -125,14 +125,14 @@ app.get("/landing", (req, res) => {
 });
 
 app.get("/villages", (req, res) => {
-  // const user =  auth.currentUser
+  const user =  auth.currentUser
 
   res.render("home", {
     errorMessage: "",
-    // email:user?user.email.replace('@gmail.com' , ' '):''
+    email:user?user.email.replace('@gmail.com' , ' '):''
   });
 });
-  
+
 // const generateRandomWaterLevel = () => Math.round(Math.random() * 20 + 80);
 // const generateRandomWaterLevel = () => Math.round(Math.random() * 20 + 180);
 
