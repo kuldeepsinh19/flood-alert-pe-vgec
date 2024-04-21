@@ -113,6 +113,25 @@ app.post("/signup", (req, res) => {
     });
 });
 
+const requireAdminAuth = (req, res, next) => {
+  const user = auth.currentUser;
+  
+  // Check if user is authenticated
+  if (!user) {
+    return res.redirect("/"); // Redirect to login page if user is not authenticated
+  }
+  
+  // Check if user is admin
+  // Replace this condition with your own logic to determine admin status
+  if (user.email === "kuldeepsinhrajput1919@gmail.com") {
+    return next(); // User is an admin, proceed to the next middleware
+  }
+  
+  // If user is not an admin, redirect to landing page or show an error page
+  res.status(403).send("Access forbidden"); // You can customize the response as needed
+};
+
+
 app.get("/forgot-password", (req, res) => {
   res.render("forgotPass", { errorMessage: "" }); // Pass an empty string as the initial value
 });
@@ -239,7 +258,7 @@ app.post("/forgot-password",requireAuth, (req, res) => {
     });
 });
 
-app.get("/admin",requireAuth, (req, res) => {
+app.get("/admin", requireAdminAuth, (req, res) => {
   const user = auth.currentUser;
 
   onValue(
