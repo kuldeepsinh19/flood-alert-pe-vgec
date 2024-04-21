@@ -12,177 +12,152 @@
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-MZ8ZF7B3');</script>
-  <!-- End Google Tag Manager -->
-  </head>
-  <style>
-    /* General Styles */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f2f2f2;
-      color: #333;
-      overflow-x: hidden; /* Hide horizontal scrollbar */
-    }
+<!-- End Google Tag Manager -->
+</head>
+<style>
+/* General Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+  color: #333;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
 
-    h1 {
-      font-family: Arial, sans-serif;
-      color: #3498db;
-    }
-    .email-message {
-      color: rgb(251, 250, 250);
-      font-size: larger;
-      right: 0;
-      margin-left: 15%;
-      font-weight: bolder;
-    }
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background-color: #3498db;
-      padding: 10px;
-      color: #fff;
-      text-align: center;
-      z-index: 1000;
-      display: flex;
-      align-items: baseline;
-    }
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #3498db;
+  padding: 10px;
+  color: #fff;
+  text-align: center;
+  z-index: 1000;
+}
 
-    .navbar ul {
-      list-style-type: none;
-      padding: 0;
-      margin-left: 36%;
-    }
+.navbar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px;
+}
 
-    @media only screen and (max-width: 600px) {
-      .navbar {
-        display: block;
-        justify-content: center;
-        width: 100%;
-      }
+.navbar ul li {
+  display: inline;
+  margin-right: 20px;
+}
 
-      .navbar ul {
-        margin-left: 0;
-      }
+.navbar ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
 
-      .email-message {
-        margin-left: auto;
-        left: 0;
-      }
-    }
+.title-container {
+  background-color: #0f1010;
+  text-align: center;
+  padding: 5px 0;
+  margin-top: 60px; /* Space between navbar and title */
+}
 
-    .navbar ul li {
-      display: inline;
-      margin-right: 20px;
-    }
+h1 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+}
 
-    .navbar ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-    }
+.container {
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
 
-    .container {
-      max-width: 100%;
-      margin: 70px auto 20px auto;
-      padding: 0 20px;
-      overflow-y: auto;
-      height: calc(100vh - 90px);
-      text-align: center;
-      box-sizing: border-box;
-    }
+.submission-box {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative; /* Ensure child elements position correctly */
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(
-        auto-fill,
-        minmax(300px, 1fr)
-      ); /* Adjusted width */
-      gap: 30px;
-    }
+.submission-box:hover {
+  transform: scale(1.05);
+}
 
-    .village {
-      background-color: #63adde;
-      border: 1px solid #fcfafa;
-      border-radius: 7px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added light shadow */
-    }
+.submission-number {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #3498db;
+  color: #fff;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  z-index: 1;
+}
 
-    .status-circle {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    .text {
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: 800;
-    }
-    .status-red {
-      background-color: red;
-    }
+.submission-details {
+  padding: 20px;
+  flex: 1;
+}
 
-    h2 {
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: 800;
-    }
-    .status-orange {
-      background-color: orange;
-    }
+.submission-details p {
+  margin: 5px 0;
+  font-size: 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    .status-green {
-      background-color: green;
-    }
+.key {
+  font-weight: bold;
+  color: #3498db;
+}
 
-    .footer {
-      background-color: #3498db;
-      color: #fff;
-      text-align: center;
-      padding: 20px 0;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-    }
-  </style>
-  <body>
-    <div class="navbar">
-     
-      <ul>
-        <li><a href="#" id="homeLink" class="active">HOME</a></li>
-        <!-- <li><a href="#" id="contactLink">CONTACT</a></li> -->
-        <li><a href="#" id="adminLink">ADMIN</a></li>
-        <li><a href="#" id="aboutLink">ABOUT</a></li>
-        <li><a href="#" id="villagesLink">VILLAGES</a></li>
-  
-      </ul>
+.value {
+  color: #555;
+}
+</style>
+</head>
+<body>
+<div class="navbar">
+<ul>
+  <li><a href="#" id="adminLink">ADMIN</a></li>
+</ul>
+</div>
+<div class="title-container">
+<h1>Form Submissions</h1>
+</div>
+<div class="container">
+<% if (formData) { %> <% Object.keys(formData).forEach((key, index) => { %>
+<div class="submission-box">
+  <div class="submission-number"><%= index + 1 %></div>
+  <div class="submission-details">
+    <p><span class="key">Name:</span> <span class="value"><%= formData[key].name %></span></p>
+    <p><span class="key">Email:</span> <span class="value"><%= formData[key].email %></span></p>
+    <p><span class="key">Phone:</span> <span class="value"><%= formData[key].phone %></span></p>
+    <p><span class="key">Message:</span> <span class="value"><%= formData[key].message %></span></p>
 
-      <% if(email) { %>
-      <p class="email-message"><%= email %></p>
-      <% } %>
-    </div>
-    <div class="container">
-      <h1>Form Submissions</h1>
-      <% if (formData) { %> <% Object.keys(formData).forEach((key) => { %>
-      <div>
-        <div class="dec">
-          <p>Name: <%= formData[key].name %></p>
-          <p>Email: <%= formData[key].email %></p>
-          <p>Message: <%= formData[key].message %></p>
-          <p>Subject: <%= formData[key].subject %></p>
-          <!-- Add more fields as needed -->
-        </div>
-      </div>
-      <% }); %> <% } else { %>
-      <p>No form submissions available.</p>
-      <% } %>
-    </div>
-  </body>
+    <p><span class="key">Subject:</span> <span class="value"><%= formData[key].subject %></span></p>
+    <!-- Add more fields as needed -->
+  </div>
+</div>
+<% }); %> <% } else { %>
+<p>No form submissions available.</p>
+<% } %>
+</div>
+
   <script>
     // JavaScript code to handle navigation
     const homeLink = document.getElementById("homeLink");
@@ -190,17 +165,17 @@
     const villagesLink = document.getElementById("villagesLink");
     const adminLink = document.getElementById("adminLink")
 
-    homeLink.addEventListener("click", () => {
-      window.location.href = "/landing";
-    });
+    // homeLink.addEventListener("click", () => {
+    //   window.location.href = "/landing";
+    // });
 
-    aboutLink.addEventListener("click", () => {
-      window.location.href = "/about";
-    });
+    // aboutLink.addEventListener("click", () => {
+    //   window.location.href = "/about";
+    // });
 
-    villagesLink.addEventListener("click", () => {
-      window.location.href = "/villages";
-    });
+    // villagesLink.addEventListener("click", () => {
+    //   window.location.href = "/villages";
+    // });
     villagesLink.addEventListener("click", () => {
       window.location.href = "/admin";
     });

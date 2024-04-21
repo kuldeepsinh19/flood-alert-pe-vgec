@@ -27,7 +27,14 @@ const firebaseApp = initializeApp(firebaseConfig);
 const database = getDatabase(firebaseApp);
 
 const auth = getAuth(firebaseApp);
-
+const requireAuth = (req, res, next) => {
+  const user = auth.currentUser;
+  if (user) {
+    next(); // User is authenticated, proceed to the next middleware
+  } else {
+    res.redirect("/"); // Redirect to login page if user is not authenticated
+  }
+};
 app.use(express.static("public"));
 
 app.set("views", __dirname + "/views");
@@ -124,7 +131,7 @@ app.get("/landing", (req, res) => {
   });
 });
 
-app.get("/villages", (req, res) => {
+app.get("/villages",requireAuth, (req, res) => {
   const user =  auth.currentUser
 
   res.render("home", {
@@ -196,7 +203,7 @@ app.get("/villages", (req, res) => {
 // });
 
 // Call the function to update the name value
-app.get("/contact", (req, res) => {
+app.get("/contact",requireAuth, (req, res) => {
   const user = auth.currentUser;
 
   res.render("contact", {
@@ -205,7 +212,7 @@ app.get("/contact", (req, res) => {
   });
 });
 
-app.get("/about", (req, res) => {
+app.get("/about",requireAuth, (req, res) => {
   const user = auth.currentUser;
 
   // Initialize messages variable to null
@@ -219,7 +226,7 @@ app.get("/about", (req, res) => {
 });
 
 // Handle forgot password request
-app.post("/forgot-password", (req, res) => {
+app.post("/forgot-password",requireAuth, (req, res) => {
   const { email } = req.body;
 
   sendPasswordResetEmail(auth, email)
@@ -232,7 +239,7 @@ app.post("/forgot-password", (req, res) => {
     });
 });
 
-app.get("/admin", (req, res) => {
+app.get("/admin",requireAuth, (req, res) => {
   const user = auth.currentUser;
 
   onValue(
@@ -250,7 +257,7 @@ app.get("/admin", (req, res) => {
     }
   );
 });
-app.post("/submit-contact", (req, res) => {
+app.post("/submit-contact",requireAuth, (req, res) => {
   const formData = req.body;
   const user = auth.currentUser;
 
