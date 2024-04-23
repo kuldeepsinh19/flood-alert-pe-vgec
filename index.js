@@ -57,7 +57,7 @@ app.post("/login", (req, res) => {
     .then((userCredential) => {
       const user = userCredential.user;
       console.log(user);
-      if (email === "kuldeepsinhrajput1919@gmail.com") {
+      if (email === "kuldeepsinhrajput1919@gmail.com" || email === "hwani2288@gmail.com" || email === "pevgec@gmail.com") {
         // If the user is an admin, redirect to admin page
         res.redirect("/admin");
       } else {
@@ -123,7 +123,7 @@ const requireAdminAuth = (req, res, next) => {
   
   // Check if user is admin
   // Replace this condition with your own logic to determine admin status
-  if (user.email === "kuldeepsinhrajput1919@gmail.com") {
+  if (user.email === "kuldeepsinhrajput1919@gmail.com" || user.email === "hwani2288@gmail.com" || user.email === "pevgec@gmail.com") {
     return next(); // User is an admin, proceed to the next middleware
   }
   
