@@ -258,7 +258,7 @@ app.post("/forgot-password",requireAuth, (req, res) => {
     });
 });
 
-app.get("/admin", requireAdminAuth, (req, res) => {
+app.get("/admin",requireAuth, requireAdminAuth, (req, res) => {
   const user = auth.currentUser;
 
   onValue(
