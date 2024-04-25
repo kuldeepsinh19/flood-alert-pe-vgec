@@ -4,23 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      background: #007bff;
     }
 
     .container {
       background-color: #fff;
-      padding: 20px;
+      padding: 40px 30px;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 100%;
+      perspective: 2700px;
     }
 
     h2 {
@@ -37,12 +45,14 @@
       border-radius: 4px;
       border: 1px solid #ccc;
       box-sizing: border-box;
+      outline: none;
     }
 
     input[type="submit"] {
       background-color: #007bff;
       color: #fff;
       cursor: pointer;
+      transition: background-color 0.3s;
     }
 
     input[type="submit"]:hover {
@@ -51,24 +61,40 @@
 
     .error-message {
       color: red;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
   </style>
   <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-MZ8ZF7B3');</script>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZ8ZF7B3');</script>
   <!-- End Google Tag Manager -->
 </head>
 <body>
-    <div class="container">
-        <h2>Sign Up</h2>
-        <% if(errorMessage) { %>
-          <p class="error-message"><%= errorMessage %></p>
-        <% } %>
-        <form action="/signup" method="POST">
-    
+  <div class="container">
+    <h2>Sign Up</h2>
+    <% if(errorMessage) { %>
+      <p class="error-message"><%= errorMessage %></p>
+    <% } %>
+    <form action="/signup" method="POST">
       <input type="text" name="email" placeholder="Email">
       <input type="password" name="password" placeholder="Password">
       <input type="submit" value="Sign Up">
@@ -76,13 +102,12 @@
     <p>Already have an account? <a href="/">Login</a></p>
   </div>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NL86V4999M"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-NL86V4999M');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NL86V4999M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-NL86V4999M');
+  </script>
 </body>
 </html>

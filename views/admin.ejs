@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Form Submissions</title>
-    <!-- Add your CSS link here -->
-    <!-- <link rel="stylesheet" href="home.css" /> -->
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-MZ8ZF7B3');</script>
-<!-- End Google Tag Manager -->
-</head>
-<style>
-/* General Styles */
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Submissions</title>
+  <!-- Add Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-+4uFs0bxwXVsGcbFzSJZFcI3R/6R/IO1Fyq+5ZtBy7X6k7wdu0s6qr/GnJsW2KDI" crossorigin="anonymous">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
+
+  <!-- Your existing CSS styles -->
+
+  <style>
+    /* General Styles */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
@@ -128,65 +127,116 @@ h1 {
 .value {
   color: #555;
 }
-</style>
+    /* Existing CSS styles */
+    .status-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .status-button i {
+      margin-right: 5px;
+    }
+
+    .pending {
+      background-color: rgb(214, 214, 3);
+      color: black;
+    }
+
+    .on-process {
+      background-color: rgb(4, 149, 4);
+      color: white;
+    }
+
+    .resolved {
+      background-color: rgb(191, 6, 6);
+      color: white;
+    }
+  </style>
+
 </head>
 <body>
-<div class="navbar">
-<ul>
-  <li><a href="#" id="adminLink">ADMIN</a></li>
-</ul>
-</div>
-<div class="title-container">
-<h1>Form Submissions</h1>
-</div>
-<div class="container">
-<% if (formData) { %> <% Object.keys(formData).forEach((key, index) => { %>
-<div class="submission-box">
-  <div class="submission-number"><%= index + 1 %></div>
-  <div class="submission-details">
-    <p><span class="key">Name:</span> <span class="value"><%= formData[key].name %></span></p>
-    <p><span class="key">Email:</span> <span class="value"><%= formData[key].email %></span></p>
-    <p><span class="key">Phone:</span> <span class="value"><%= formData[key].phone %></span></p>
-    <p><span class="key">Message:</span> <span class="value"><%= formData[key].message %></span></p>
-
-    <p><span class="key">Subject:</span> <span class="value"><%= formData[key].subject %></span></p>
-    <!-- Add more fields as needed -->
+  <div class="navbar">
+    <ul>
+      <li><a href="#" id="adminLink">ADMIN</a></li>
+    </ul>
   </div>
-</div>
-<% }); %> <% } else { %>
-<p>No form submissions available.</p>
-<% } %>
-</div>
+  <div class="title-container">
+    <h1>Form Submissions</h1>
+  </div>
+  <div class="container">
+    <% if (formData) { %> <% Object.keys(formData).forEach((key, index) => { %>
+    <div class="submission-box">
+      <div class="submission-number"><%= index + 1 %></div>
+      <div class="submission-details">
+        <p><span class="key">Name:</span> <span class="value"><%= formData[key].name %></span></p>
+        <p><span class="key">Email:</span> <span class="value"><%= formData[key].email %></span></p>
+        <p><span class="key">Phone:</span> <span class="value"><%= formData[key].phone %></span></p>
+        <p><span class="key">Message:</span> <span class="value"><%= formData[key].message %></span></p>
+        <p><span class="key">Subject:</span> <span class="value"><%= formData[key].subject %></span></p>
+        
+        <!-- Buttons for status -->
+        <div class="status-buttons">
+          <button class="status-button pending" onclick="changeStatus(this)"><i class="fas fa-hourglass-half"></i> Pending</button>
+          <button class="status-button resolved" onclick="resolveForm(this, '<%= key %>')"><i class="fas fa-check-circle"></i> Resolved</button>
+        </div>
+      </div>
+    </div>
+    <% }); %> <% } else { %>
+    <p>No form submissions available.</p>
+    <% } %>
+  </div>
 
   <script>
-    // JavaScript code to handle navigation
-    const homeLink = document.getElementById("homeLink");
-    const aboutLink = document.getElementById("aboutLink");
-    const villagesLink = document.getElementById("villagesLink");
-    const adminLink = document.getElementById("adminLink")
+    // Initialize Firebase
+    const firebaseConfig = {
+  apiKey: "AIzaSyA6_Fls-zrOp1JTSvEFPNkVUf7iOeg7TXU",
+  authDomain: "waterlevel-c2a1b.firebaseapp.com",
+  projectId: "waterlevel-c2a1b",
+  storageBucket: "waterlevel-c2a1b.appspot.com",
+  messagingSenderId: "940376979833",
+  appId: "1:940376979833:web:4622066a99cbfe86ee97a8",
+  measurementId: "G-NL86V4999M",
+};
+    firebase.initializeApp(firebaseConfig);
 
-    // homeLink.addEventListener("click", () => {
-    //   window.location.href = "/landing";
-    // });
+    // Function to change status
+    function changeStatus(button) {
+      const statusButtons = button.parentNode.querySelectorAll('.status-button');
+      statusButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      button.innerHTML = '<i class="fas fa-play-circle"></i> On Process';
+      button.classList.remove("pending");
+      button.classList.add("on-process");
+      button.style.backgroundColor = "green";
+      button.setAttribute("onclick", "removeOnProcess(this)");
+    }
 
-    // aboutLink.addEventListener("click", () => {
-    //   window.location.href = "/about";
-    // });
+    // Function to remove on process status
+    function removeOnProcess(button) {
+      button.innerHTML = '<i class="fas fa-hourglass-half"></i> Pending';
+      button.classList.remove("on-process");
+      button.classList.add("pending");
+      button.style.backgroundColor = "yellow";
+      button.setAttribute("onclick", "changeStatus(this)");
+    }
 
-    // villagesLink.addEventListener("click", () => {
-    //   window.location.href = "/villages";
-    // });
-    villagesLink.addEventListener("click", () => {
-      window.location.href = "/admin";
-    });
+    // Function to resolve form and remove from UI
+function resolveForm(button) {
+  const submissionBox = button.closest('.submission-box');
+  submissionBox.remove(); // Remove the form from UI
+}
+
   </script>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NL86V4999M"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-NL86V4999M');
-</script>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZ8ZF7B3');</script>
+  <!-- End Google Tag Manager -->
+</body>
 </html>

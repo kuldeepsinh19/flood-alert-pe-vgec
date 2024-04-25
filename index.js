@@ -276,6 +276,7 @@ app.get("/admin", requireAdminAuth, (req, res) => {
     }
   );
 });
+
 app.post("/submit-contact",requireAuth, (req, res) => {
   const formData = req.body;
   const user = auth.currentUser;
