@@ -1,3 +1,10 @@
 # Local Netlify folder
 .netlify
 node_modules
+
+# Secrets and local config
+.env
+.env.local
+
+# Per-assessment agent traces (regenerated on every run)
+traces/

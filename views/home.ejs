@@ -204,6 +204,98 @@ button:hover {
     .detailed-view button.close-button:hover {
       color: #666;
     }
+    /* ---- FloodSense AI panel ---------------------------------------- */
+    .status-yellow { background-color: #e6c200; }
+
+    .ai-panel {
+      margin: 14px 0 10px;
+      padding: 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      text-align: left;
+      color: #21313c;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .ai-button {
+      width: 100%;
+      padding: 8px 10px;
+      border: none;
+      border-radius: 6px;
+      background: #14507d;
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .ai-button:hover { background: #0e3a5c; }
+    .ai-button[disabled] { background: #7d93a3; cursor: progress; }
+    .ai-severity {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: #fff;
+    }
+    .sev-NORMAL   { background: #1c7c3c; }
+    .sev-WATCH    { background: #9a7d00; }
+    .sev-WARNING  { background: #c2620a; }
+    .sev-EVACUATE { background: #b3141c; }
+    .ai-row { margin: 7px 0; }
+    .ai-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #5a6b78;
+      font-weight: 700;
+    }
+    .ai-reasoning { font-style: italic; }
+    .ai-sms {
+      background: #10202b;
+      color: #cfe8d0;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .ai-guardrail {
+      border-left: 3px solid #b3141c;
+      padding-left: 8px;
+      background: #fdf0f0;
+      font-size: 12px;
+    }
+    .ai-escalated {
+      border-left: 3px solid #c2620a;
+      padding-left: 8px;
+      background: #fff6ec;
+      font-size: 12px;
+    }
+    .ai-meta { font-size: 11px; color: #6b7c88; }
+    .ai-error { color: #b3141c; font-weight: 600; }
+    .sim-banner {
+      max-width: 900px;
+      margin: 0 auto 18px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: #fff8e1;
+      border: 1px solid #e0c56b;
+      color: #5b4708;
+      font-size: 13px;
+    }
+    .assess-all {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      background: #14507d;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 16px;
+    }
   </style>
   
   <body>
@@ -226,84 +318,36 @@ button:hover {
         </p>
       </div>
       <h1>CURRENT WATER LEVEL FOR VILLAGES</h1>
+
+      <div class="sim-banner">
+        <strong>What is real here:</strong> rainfall is a live forecast from Open-Meteo for each
+        village&rsquo;s actual coordinates, and the AI assessments are real model calls.
+        <strong>River levels are simulated</strong> by a hydrograph model
+        (<code>lib/hydrology.js</code>) because this project has no physical sensors.
+        Severity is decided by an AI agent, then checked against a deterministic threshold rule
+        that the model cannot override downwards &mdash; see <code>agents/guardrails.js</code>.
+      </div>
+
+      <button class="assess-all" id="assessAll">Run AI assessment for all villages</button>
       <div class="grid">
-        <div class="village" id="village1">
-          <h2>belapur</h2>
+        <% snapshot.forEach(function (v) { %>
+        <div class="village" id="village-<%= v.villageId %>" data-village="<%= v.villageId %>"
+             data-initial-severity="<%= v.deterministicSeverity %>">
+          <h2><%= v.villageName %></h2>
           <hr />
-          <br />
-          <div class="status-circle" id="circle1"></div>
-          <p class="text">Status: <span id="status1"></span></p>
-          <p class="text">Water Level: <span id="waterLevel1"></span></p>
-          <p class="text">Peak Water Level: <span id="peakLevel1">200</span></p>
-          <button onclick="toggleDetails('belapur')">View More</button>
-        </div>
-        <div class="village" id="village2">
-          <h2>Bhangarh</h2>
-          <hr />
-          <br />
-          <div class="status-circle" id="circle2"></div>
-          <p class="text">Status: <span id="status2"></span></p>
-          <p class="text">Water Level: <span id="waterLevel2"></span></p>
-          <p class="text">Peak Water Level: <span id="peakLevel2">180</span></p>
-          <button onclick="toggleDetails('bhangarh')">View More</button>
+          <div class="status-circle" data-role="circle"></div>
+          <p class="text">Status: <span data-role="status">—</span></p>
+          <p class="text">Water Level: <span data-role="level"><%= v.levelCm %></span> cm</p>
+          <p class="text">Warning <%= v.warningLevelCm %> cm &middot; Danger <%= v.dangerLevelCm %> cm</p>
 
-        </div>
-        <div class="village" id="village3">
-          <h2>khanpur</h2>
-          <hr />
-          <br />
-          <div class="status-circle" id="circle3"></div>
-          <p class="text">Status: <span id="status3"></span></p>
-          <p class="text">Water Level: <span id="waterLevel3"></span></p>
-          <p class="text">Peak Water Level: <span id="peakLevel3">160</span></p>
-          <button onclick="toggleDetails('khanpur')">View More</button>
+          <div class="ai-panel">
+            <button class="ai-button" data-role="assess">Run AI assessment</button>
+            <div data-role="ai-result" hidden></div>
+          </div>
 
+          <button onclick="toggleDetails('<%= v.villageId %>')">View More</button>
         </div>
-        <div class="village" id="village4">
-          <h2>mangarh</h2>
-          <hr />
-          <br />
-          <div class="status-circle" id="circle4"></div>
-          <p class="text">Status: <span id="status4"></span></p>
-          <p class="text">Water Level: <span id="waterLevel4"></span></p>
-          <p class="text">Peak Water Level: <span id="peakLevel4">140</span></p>
-          <button onclick="toggleDetails('mangarh')">View More</button>
-
-        </div>
-        <!-- New villages -->
-        <div class="village" id="village5">
-          <h2>adarshnagar</h2>
-          <hr />
-          <br />
-          <div class="status-circle" id="circle5"></div>
-          <p class="text">Status: <span id="status5"></span></p>
-          <p class="text">Water Level: <span id="waterLevel5"></span></p>
-          <p class="text">Peak Water Level: <span id="peakLevel5">130</span></p>
-          <button onclick="toggleDetails('adarshnagar')">View More</button>
-
-        </div>
-        <div class="village" id="village6">
-          <h2>sarai</h2>
-          <hr />
-          <br />
-          <div class="status-circle" id="circle6"></div>
-          <p class="text">Status: <span id="status6"></span></p>
-          <p class="text">Water Level: <span id="waterLevel6"></span></p>
-          <p class="text">Peak Water Level: <span id="peakLevel6">120</span></p>
-          <button onclick="toggleDetails('sarai')">View More</button>
-
-        </div>
-        <div class="village" id="village7">
-          <h2>sihor</h2>
-          <hr />
-          <br />
-          <div class="status-circle" id="circle7"></div>
-          <p class="text">Status: <span id="status7"></span></p>
-          <p class="text">Water Level: <span id="waterLevel7"></span></p>
-          <p class="text">Peak Water Level: <span id="peakLevel7">110</span></p>
-          <button onclick="toggleDetails('sihor')">View More</button>
-
-        </div>
+        <% }); %>
       </div>
         <!-- Include other village divs similarly -->
       </div>
@@ -469,35 +513,194 @@ button:hover {
 </div>
 
     <script>
-      function getStatus(waterLevel, villagePeakLevel) {
-        if (waterLevel >= villagePeakLevel) {
-          return { status: "status-red", text: "Flood 🌊🚨" };
-        } else if (waterLevel >= villagePeakLevel - 20) {
-          return { status: "status-orange", text: "Warning" };
-        } else {
-          return { status: "status-green", text: "Normal" };
+      /* ------------------------------------------------------------------
+       * FloodSense AI — village status and agent assessments.
+       *
+       * What used to be here, in the 2024 build:
+       *
+       *     const waterLevel = Math.floor(Math.random() * (221 - 130)) + 130;
+       *     updateStatus(waterLevel);
+       *     setInterval(... another random number ..., 9000);
+       *
+       * One random number, re-rolled in the browser every 9 seconds, applied to
+       * all seven villages at once — so every village always showed the exact
+       * same level and only the thresholds differed.
+       *
+       * Levels now come from the server (lib/hydrology.js, still simulated but
+       * a real per-village hydrograph). Severity comes from the agent pipeline
+       * at /api/assess/:village, behind a button because each run costs money
+       * and takes a few seconds.
+       * ------------------------------------------------------------------ */
+
+      const SEVERITY_CLASS = {
+        NORMAL: "status-green",
+        WATCH: "status-yellow",
+        WARNING: "status-orange",
+        EVACUATE: "status-red",
+      };
+      const SEVERITY_TEXT = {
+        NORMAL: "Normal",
+        WATCH: "Watch",
+        WARNING: "Warning",
+        EVACUATE: "Evacuate 🌊🚨",
+      };
+
+      const escapeHtml = (s) =>
+        String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+        })[c]);
+
+      function paintStatus(card, severity, levelCm) {
+        card.querySelector('[data-role="circle"]').className =
+          "status-circle " + (SEVERITY_CLASS[severity] || "status-green");
+        card.querySelector('[data-role="status"]').innerText =
+          SEVERITY_TEXT[severity] || severity;
+        if (levelCm !== undefined) {
+          card.querySelector('[data-role="level"]').innerText = levelCm;
         }
       }
 
-      function updateStatus(waterLevel) {
-        const villagePeakLevels = [200, 180, 160, 140, 130, 120, 110];
+      /* First paint: the deterministic reading the server already rendered.
+         No model call, no cost, no waiting. */
+      document.querySelectorAll(".village[data-village]").forEach((card) => {
+        paintStatus(card, card.dataset.initialSeverity || "NORMAL");
+      });
 
-        for (let i = 1; i <= 7; i++) {
-          const { status, text } = getStatus(waterLevel, villagePeakLevels[i - 1]);
-          const circle = document.getElementById("circle" + i);
-          circle.className = "status-circle " + status;
-          document.getElementById("waterLevel" + i).innerText = waterLevel;
-          document.getElementById("status" + i).innerText = text;
+      function renderAssessment(card, data) {
+        const a = data.assessment;
+        const g = data.guardrail;
+        const ad = data.advisory;
+        const parts = [];
+
+        parts.push(
+          '<div class="ai-row"><span class="ai-severity sev-' + a.severity + '">' +
+            a.severity + '</span> <span class="ai-meta">confidence ' +
+            Math.round(a.confidence * 100) + '%' +
+            (data.mode === "DETERMINISTIC_FALLBACK" ? " &middot; threshold rule only" : "") +
+            '</span></div>'
+        );
+
+        if (a.hours_to_breach !== null) {
+          parts.push(
+            '<div class="ai-row"><span class="ai-label">Time to danger level</span><br>' +
+              (a.hours_to_breach <= 0
+                ? "<strong>already crossed</strong>"
+                : "<strong>~" + a.hours_to_breach + " hours</strong>") +
+              '</div>'
+          );
+        }
+
+        parts.push(
+          '<div class="ai-row"><span class="ai-label">Predicted peak</span><br>' +
+            a.predicted_peak_cm + " cm in " + a.predicted_peak_in_hours + " h</div>"
+        );
+
+        parts.push(
+          '<div class="ai-row ai-reasoning">' + escapeHtml(a.reasoning) + "</div>"
+        );
+
+        if (a.data_quality_concern) {
+          parts.push(
+            '<div class="ai-row ai-guardrail"><span class="ai-label">Data quality</span><br>' +
+              escapeHtml(a.data_quality_concern) + "</div>"
+          );
+        }
+
+        /* The guardrail is shown, not hidden. If the model tried to talk a real
+           flood down, that is the single most important thing on this card. */
+        if (g.escalatedByModel) {
+          parts.push(
+            '<div class="ai-row ai-escalated"><span class="ai-label">Escalated by AI</span><br>' +
+              "Threshold rule alone said <strong>" + g.deterministicFloor +
+              "</strong>; the agent raised it to <strong>" + g.finalSeverity + "</strong>.</div>"
+          );
+        }
+        (g.interventions || []).forEach((i) => {
+          if (i.type === "DOWNGRADE_BLOCKED") {
+            parts.push(
+              '<div class="ai-row ai-guardrail"><span class="ai-label">Guardrail blocked a downgrade</span><br>' +
+                escapeHtml(i.detail) + "</div>"
+            );
+          }
+        });
+
+        if (ad) {
+          parts.push(
+            '<div class="ai-row"><span class="ai-label">Alert to be sent &middot; ' +
+              escapeHtml(ad.audience) + '</span><div class="ai-sms">' +
+              escapeHtml(ad.sms_en) + "\n\n" + escapeHtml(ad.sms_gu) + "\n\n" +
+              escapeHtml(ad.sms_hi) + "</div></div>"
+          );
+          if (ad.actions && ad.actions.length) {
+            parts.push(
+              '<div class="ai-row"><span class="ai-label">Actions</span><ul style="margin:4px 0 0 16px;padding:0;">' +
+                ad.actions
+                  .map((x) => "<li><strong>" + escapeHtml(x.priority) + "</strong> — " +
+                    escapeHtml(x.instruction) + "</li>")
+                  .join("") +
+                "</ul></div>"
+            );
+          }
+        }
+
+        parts.push(
+          '<div class="ai-row ai-meta">' + data.trace.model + " &middot; " +
+            (data.trace.totalLatencyMs / 1000).toFixed(1) + "s &middot; $" +
+            data.trace.totalCostUsd.toFixed(4) +
+            (data.servedFromCache ? " &middot; cached" : "") + "</div>"
+        );
+
+        const target = card.querySelector('[data-role="ai-result"]');
+        target.innerHTML = parts.join("");
+        target.hidden = false;
+        paintStatus(card, a.severity, data.reading.levelCm);
+      }
+
+      async function assess(card, { refresh = false } = {}) {
+        const villageId = card.dataset.village;
+        const button = card.querySelector('[data-role="assess"]');
+        const target = card.querySelector('[data-role="ai-result"]');
+
+        button.disabled = true;
+        button.innerText = "Assessing…";
+        try {
+          const response = await fetch(
+            "/api/assess/" + encodeURIComponent(villageId) + (refresh ? "?refresh=1" : "")
+          );
+          if (!response.ok) throw new Error("HTTP " + response.status);
+          renderAssessment(card, await response.json());
+          button.innerText = "Re-run assessment";
+        } catch (error) {
+          target.innerHTML =
+            '<div class="ai-row ai-error">Assessment unavailable: ' +
+            escapeHtml(error.message) + "</div>";
+          target.hidden = false;
+          button.innerText = "Retry";
+        } finally {
+          button.disabled = false;
         }
       }
 
-      const waterLevel = Math.floor(Math.random() * (221 - 130)) + 130;
-      updateStatus(waterLevel);
+      document.querySelectorAll('[data-role="assess"]').forEach((button) => {
+        button.addEventListener("click", () =>
+          assess(button.closest(".village"), { refresh: button.innerText.startsWith("Re-run") })
+        );
+      });
 
-      setInterval(() => {
-        const newWaterLevel = Math.floor(Math.random() * (221 - 130)) + 130;
-        updateStatus(newWaterLevel);
-      }, 9000);
+      const assessAll = document.getElementById("assessAll");
+      if (assessAll) {
+        assessAll.addEventListener("click", async () => {
+          assessAll.disabled = true;
+          assessAll.innerText = "Assessing all villages…";
+          /* Sequential: seven concurrent agent runs is a rate-limit risk and
+             the user reads them one at a time anyway. */
+          for (const card of document.querySelectorAll(".village[data-village]")) {
+            await assess(card);
+          }
+          assessAll.disabled = false;
+          assessAll.innerText = "Run AI assessment for all villages";
+        });
+      }
 
       // Function to toggle the detailed view of a village
       function toggleDetails(villageId) {

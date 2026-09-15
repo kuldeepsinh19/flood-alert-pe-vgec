@@ -191,17 +191,16 @@ h1 {
   </div>
 
   <script>
-    // Initialize Firebase
-    const firebaseConfig = {
-  apiKey: "AIzaSyA6_Fls-zrOp1JTSvEFPNkVUf7iOeg7TXU",
-  authDomain: "waterlevel-c2a1b.firebaseapp.com",
-  projectId: "waterlevel-c2a1b",
-  storageBucket: "waterlevel-c2a1b.appspot.com",
-  messagingSenderId: "940376979833",
-  appId: "1:940376979833:web:4622066a99cbfe86ee97a8",
-  measurementId: "G-NL86V4999M",
-};
-    firebase.initializeApp(firebaseConfig);
+    /* The 2024 build initialised Firebase here with a second hardcoded copy of
+       the config. It was dead code — nothing on this page ever read from the
+       database client-side; the submissions are rendered server-side by the
+       /admin route. It also threw on every page load, because the v9 modular
+       builds loaded above do not expose a global `firebase` object. Removed.
+
+       Note: the Resolved button below still only removes the card from the DOM.
+       Nothing is persisted, so a refresh brings it back. That is a pre-existing
+       limitation of the 2024 admin page, left as-is rather than quietly
+       reworked — see docs/ARCHITECTURE.md on scope. */
 
     // Function to change status
     function changeStatus(button) {

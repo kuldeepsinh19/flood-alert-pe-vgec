@@ -1,20 +1,42 @@
 {
-  "name": "my-project",
-  "version": "0.0.0",
+  "name": "floodsense-ai",
+  "version": "1.0.0",
   "private": true,
+  "description": "Agentic AI flood early-warning system for rural Indian villages. An AI layer built on top of a 2024 college project (flood-alert-pe-vgec, VGEC Project Exhibition).",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "node --test test/",
+    "evals": "node evals/run-evals.js",
+    "evals:baseline": "node evals/run-evals.js --baseline",
+    "assess": "node scripts/assess.js"
+  },
+  "keywords": [
+    "agentic-ai",
+    "llm",
+    "flood-early-warning",
+    "anthropic",
+    "claude",
+    "disaster-management",
+    "hydrology",
+    "nodejs"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
+    "@anthropic-ai/sdk": "^0.125.0",
+    "body-parser": "^1.20.3",
+    "dotenv": "^17.4.2",
     "ejs": "^3.1.10",
     "express": "~4.16.1",
+    "express-session": "^1.19.0",
     "firebase": "^10.8.0",
-    "firebase-admin": "^12.0.0",
-    "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
-    "morgan": "~1.9.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.0"
   }
 }

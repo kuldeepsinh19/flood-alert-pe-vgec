@@ -1,4 +1,7 @@
+require("dotenv").config({ quiet: true });
+
 const express = require("express");
+const session = require("express-session");
 const bodyParser = require("body-parser");
 const { initializeApp } = require("firebase/app");
 const {
@@ -7,34 +10,73 @@ const {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
 } = require("firebase/auth");
-const { getDatabase, set, ref, push, onValue } = require("firebase/database"); // Import necessary database functions
-const { doc } = require("firebase/firestore");
+const { getDatabase, ref, push, get } = require("firebase/database");
+
+// FloodSense AI layer — see agents/ and docs/ARCHITECTURE.md
+const orchestrator = require("./agents/orchestrator");
+const { summariseIncident } = require("./agents/incidentAgent");
+const { isVillage, listVillages } = require("./lib/villages");
 
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 
-// Firebase configuration
+// Firebase configuration. These were committed to source in the 2024 build.
+// Firebase web keys are public by design — the real access control is the
+// Realtime Database security rules — but committing them still meant the
+// project could not be pointed at a different backend without a code edit.
 const firebaseConfig = {
-  apiKey: "AIzaSyA6_Fls-zrOp1JTSvEFPNkVUf7iOeg7TXU",
-  authDomain: "waterlevel-c2a1b.firebaseapp.com",
-  projectId: "waterlevel-c2a1b",
-  storageBucket: "waterlevel-c2a1b.appspot.com",
-  messagingSenderId: "940376979833",
-  appId: "1:940376979833:web:4622066a99cbfe86ee97a8",
-  measurementId: "G-NL86V4999M",
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 const firebaseApp = initializeApp(firebaseConfig);
 const database = getDatabase(firebaseApp);
-
 const auth = getAuth(firebaseApp);
+
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "")
+  .split(",")
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
+
+/**
+ * Per-visitor sessions.
+ *
+ * The 2024 build read `auth.currentUser` from the Firebase *client* SDK inside
+ * Express route handlers. That object is a single module-level global in one
+ * Node process, so every visitor to the deployed site shared one identity —
+ * whoever logged in most recently was "the current user" for everybody, and
+ * requireAuth was effectively a global on/off switch rather than a per-user
+ * check. Login state now lives in the request session, where it belongs.
+ */
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "floodsense-dev-secret-change-me",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 8,
+      secure: process.env.NODE_ENV === "production",
+    },
+  })
+);
+
 const requireAuth = (req, res, next) => {
-  const user = auth.currentUser;
-  if (user) {
+  if (req.session && req.session.user) {
     next(); // User is authenticated, proceed to the next middleware
   } else {
     res.redirect("/"); // Redirect to login page if user is not authenticated
   }
 };
+
+/** Display name for the header, preserving the 2024 behaviour of trimming the domain. */
+const displayEmail = (req) =>
+  req.session && req.session.user ? req.session.user.email.replace("@gmail.com", " ") : "";
+
 app.use(express.static("public"));
 
 app.set("views", __dirname + "/views");
@@ -56,9 +98,12 @@ app.post("/login", (req, res) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      console.log(user);
-      if (email === "kuldeepsinhrajput1919@gmail.com" || email === "hwani2288@gmail.com" || email === "pevgec@gmail.com") {
-        // If the user is an admin, redirect to admin page
+      const isAdmin = ADMIN_EMAILS.includes(String(user.email).toLowerCase());
+
+      // Bind the identity to THIS visitor's session, not to a process global.
+      req.session.user = { uid: user.uid, email: user.email, isAdmin };
+
+      if (isAdmin) {
         res.redirect("/admin");
       } else {
         res.redirect("/landing"); // Redirect non-admin users to home page
@@ -99,8 +144,15 @@ app.post("/signup", (req, res) => {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      console.log("User signed up:", user);
-      res.render("home");
+      // Sign the new user in for this session. The 2024 build rendered "home"
+      // directly without establishing any session, so every nav link on that
+      // page bounced the brand-new user straight back to the login screen.
+      req.session.user = {
+        uid: user.uid,
+        email: user.email,
+        isAdmin: ADMIN_EMAILS.includes(String(user.email).toLowerCase()),
+      };
+      res.redirect("/landing");
     })
     .catch((signUpError) => {
       let errorMessage = "Error signing up. Please try again later.";
@@ -114,21 +166,20 @@ app.post("/signup", (req, res) => {
 });
 
 const requireAdminAuth = (req, res, next) => {
-  const user = auth.currentUser;
-  
+  const user = req.session && req.session.user;
+
   // Check if user is authenticated
   if (!user) {
     return res.redirect("/"); // Redirect to login page if user is not authenticated
   }
-  
-  // Check if user is admin
-  // Replace this condition with your own logic to determine admin status
-  if (user.email === "kuldeepsinhrajput1919@gmail.com" || user.email === "hwani2288@gmail.com" || user.email === "pevgec@gmail.com") {
-    return next(); // User is an admin, proceed to the next middleware
+
+  // Admin status was decided at login against ADMIN_EMAILS and stored on the
+  // session, so it cannot be spoofed by a later request.
+  if (user.isAdmin) {
+    return next();
   }
-  
-  // If user is not an admin, redirect to landing page or show an error page
-  res.status(403).send("Access forbidden"); // You can customize the response as needed
+
+  res.status(403).send("Access forbidden");
 };
 
 
@@ -141,21 +192,20 @@ app.get("/", (req, res) => {
   res.render("login", { errorMessage: "" }); // Pass an empty string as the initial value
 });
 
-app.get("/landing", (req, res) => {
-  const user = auth.currentUser;
-
+app.get("/landing", requireAuth, (req, res) => {
   res.render("landingPage", {
     errorMessage: "",
-    email: user ? user.email.replace("@gmail.com", " ") : "",
+    email: displayEmail(req),
   });
 });
 
-app.get("/villages",requireAuth, (req, res) => {
-  const user =  auth.currentUser
-
+app.get("/villages", requireAuth, (req, res) => {
   res.render("home", {
     errorMessage: "",
-    email:user?user.email.replace('@gmail.com' , ' '):''
+    email: displayEmail(req),
+    // First paint is model-free: the page renders instantly from the
+    // deterministic reading, then fetches AI assessments per village.
+    snapshot: orchestrator.quickSnapshot(),
   });
 });
 
@@ -223,29 +273,28 @@ app.get("/villages",requireAuth, (req, res) => {
 
 // Call the function to update the name value
 app.get("/contact",requireAuth, (req, res) => {
-  const user = auth.currentUser;
-
   res.render("contact", {
     errorMessage: "",
-    email: user ? user.email.replace("@gmail.com", " ") : "",
+    email: displayEmail(req),
   });
 });
 
 app.get("/about",requireAuth, (req, res) => {
-  const user = auth.currentUser;
-
-  // Initialize messages variable to null
-  let messages = null;
-
   res.render("about", {
     errorMessage: "",
-    email: user ? user.email.replace("@gmail.com", " ") : "",
-    messages: messages, // Pass the messages to the template
+    email: displayEmail(req),
+    messages: null,
   });
 });
 
-// Handle forgot password request
-app.post("/forgot-password",requireAuth, (req, res) => {
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => res.redirect("/"));
+});
+
+// Handle forgot password request.
+// requireAuth was on this route in the 2024 build, which meant you had to be
+// logged in to reset the password you had forgotten. Removed.
+app.post("/forgot-password", (req, res) => {
   const { email } = req.body;
 
   sendPasswordResetEmail(auth, email)
@@ -258,36 +307,35 @@ app.post("/forgot-password",requireAuth, (req, res) => {
     });
 });
 
-app.get("/admin",requireAuth, requireAdminAuth, (req, res) => {
-  const user = auth.currentUser;
-
-  onValue(
-    adminFormRef,
-    (snapshot) => {
-      const formData = snapshot.val();
+app.get("/admin", requireAuth, requireAdminAuth, (req, res) => {
+  // The 2024 build used onValue() here. onValue registers a PERSISTENT
+  // subscription, so every later write to adminForms re-fired this callback and
+  // called res.render() again on an already-sent response — crashing the server
+  // with ERR_HTTP_HEADERS_SENT as soon as anyone submitted the contact form
+  // while an admin had this page open. get() is the one-shot read this wanted.
+  get(adminFormRef)
+    .then((snapshot) => {
       res.render("admin", {
-        formData: formData,
-        email: user ? user.email.replace("@gmail.com", " ") : "",
+        formData: snapshot.val(),
+        email: displayEmail(req),
       });
-    },
-    (errorObject) => {
-      console.log("The read failed: " + errorObject.code);
+    })
+    .catch((error) => {
+      console.error("The read failed:", error.message);
       res.status(500).send("Failed to retrieve form data.");
-    }
-  );
+    });
 });
 
 app.post("/submit-contact",requireAuth, (req, res) => {
   const formData = req.body;
-  const user = auth.currentUser;
 
   // Push form data to Firebase Realtime Database
   push(adminFormRef, formData)
     .then(() => {
-      const message = "form data saved ";
       res.render("about", {
-        email: user.email.replace("@gmail.com", " "),
-        messages: message,
+        errorMessage: "",
+        email: displayEmail(req),
+        messages: "form data saved ",
       }); // Rendering the "about" page after form submission
     })
     .catch((error) => {
@@ -296,6 +344,65 @@ app.post("/submit-contact",requireAuth, (req, res) => {
     });
 });
 
-app.listen(process.env.PORT || 4000);
+/* ------------------------------------------------------------------------ *
+ *  FloodSense AI API
+ *
+ *  These are the routes the villages page calls to populate its AI panel.
+ *  Assessments are cached per village inside the orchestrator, so a page
+ *  refresh does not spend money; ?refresh=1 forces a fresh agent run.
+ * ------------------------------------------------------------------------ */
+
+/** Model-free snapshot of every village. Instant, free, always available. */
+app.get("/api/snapshot", requireAuth, (req, res) => {
+  res.json({ villages: orchestrator.quickSnapshot() });
+});
+
+/** Full agent assessment for one village. */
+app.get("/api/assess/:village", requireAuth, async (req, res) => {
+  const { village } = req.params;
+  if (!isVillage(village)) {
+    return res.status(404).json({
+      error: `Unknown village "${village}"`,
+      known: listVillages().map((v) => v.id),
+    });
+  }
+  try {
+    const result = await orchestrator.assessVillage(village, {
+      refresh: req.query.refresh === "1",
+    });
+    res.json(result);
+  } catch (error) {
+    // The orchestrator degrades internally rather than throwing, so reaching
+    // here means something unexpected broke. Say so plainly.
+    console.error(`[api] assessment failed for ${village}:`, error);
+    res.status(500).json({ error: "Assessment failed", detail: error.message });
+  }
+});
+
+/** After-action report built from the assessments recorded for a village. */
+app.get("/api/incident/:village", requireAuth, async (req, res) => {
+  const { village } = req.params;
+  if (!isVillage(village)) {
+    return res.status(404).json({ error: `Unknown village "${village}"` });
+  }
+  const events = orchestrator.getEventLog(village);
+  if (events.length === 0) {
+    return res.status(409).json({
+      error: "No assessments recorded for this village yet",
+      hint: `Call /api/assess/${village} first — the incident report is built from that history.`,
+    });
+  }
+  const { report, error, trace } = await summariseIncident({ villageId: village, events });
+  if (error) {
+    return res.status(503).json({ error: "Incident report unavailable", detail: error.message, trace });
+  }
+  res.json({ villageId: village, report, trace });
+});
+
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`FloodSense listening on http://localhost:${port}`);
+  });
+}
 
 module.exports = app;
