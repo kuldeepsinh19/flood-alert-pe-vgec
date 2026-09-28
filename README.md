@@ -65,7 +65,7 @@ That is the gap this closes. It is also the gap nineteen-year-old me thought I h
 
 ## What actually happened in 2024
 
-I built [`flood-alert-pe-vgec`](https://github.com/kuldeepsinh19/flood-alert-pe-vgec) for the VGEC Project Exhibition. Two intense weeks in April 2024, 37 commits, then nothing for two and a half years.
+I built `flood-alert-pe-vgec` (this repository's original name) for the VGEC Project Exhibition. Two intense weeks in April 2024, 37 commits, then nothing for two and a half years.
 
 Its About page claimed the system used *"advanced algorithms and predictive models"* to *"anticipate when water levels are likely to rise to dangerous levels,"* with alerts reaching people *"through mobile phones, sirens, and community loudspeakers."*
 
@@ -237,8 +237,8 @@ Being a pure function of absolute time, it's also perfectly reproducible — and
 ## 🚀 Quick start
 
 ```bash
-git clone https://github.com/kuldeepsinh19/flood-alert-pe-vgec.git
-cd flood-alert-pe-vgec
+git clone https://github.com/kuldeepsinh19/floodsense-ai.git
+cd floodsense-ai
 npm install
 cp .env.example .env     # add ANTHROPIC_API_KEY to switch the AI layer on
 ```
