@@ -254,6 +254,16 @@ npm run evals:baseline       # baseline only — free, no key needed
 
 > **It runs without an API key.** You get the 2024 threshold logic, clearly labelled `DETERMINISTIC_FALLBACK` — which is exactly the degraded mode the guardrail is designed to provide.
 
+### The assess CLI
+
+```bash
+npm run assess                       # every village
+npm run assess -- mangarh --json     # one village, raw result for piping
+```
+
+Village ids: `belapur`, `bhangarh`, `khanpur`, `mangarh`, `adarshnagar`, `sarai`, `sihor`. It runs the same
+orchestrator as `/api/assess/:village`, so the output matches what the web app returns.
+
 ---
 
 ## Project structure
