@@ -254,6 +254,21 @@ npm run evals:baseline       # baseline only — free, no key needed
 
 > **It runs without an API key.** You get the 2024 threshold logic, clearly labelled `DETERMINISTIC_FALLBACK` — which is exactly the degraded mode the guardrail is designed to provide.
 
+### Configuration
+
+Everything lives in `.env`; [`.env.example`](.env.example) documents each variable.
+
+| Variable | Default | What it does |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | — | Turns the AI layer on; without it the app uses the deterministic fallback |
+| `ANTHROPIC_MODEL`, `ANTHROPIC_EFFORT` | `claude-opus-5`, `medium` | Model and reasoning effort; lower effort is cheaper and faster |
+| `SESSION_SECRET` | — | Any long random string; required in production |
+| `ADMIN_EMAILS` | — | Comma-separated accounts that can open `/admin` |
+| `FIREBASE_*` | — | Firebase web config for sign-in and the admin forms |
+| `ASSESSMENT_CACHE_TTL_MS` | `600000` | How long an assessment is reused before a fresh agent run |
+| `DISABLE_LIVE_WEATHER` | `false` | Use simulated rainfall instead of Open-Meteo |
+| `WRITE_TRACES` | `true` | Write a JSON trace per assessment to `traces/` |
+
 ### The assess CLI
 
 ```bash
