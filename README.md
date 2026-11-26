@@ -298,7 +298,10 @@ agents/               the AI layer
   schemas.js            Zod contracts, shared by agents and evals
   client.js             SDK client, model config, USD cost accounting
 evals/                24 labelled scenarios + scoring harness
+scripts/assess.js     the CLI behind `npm run assess`
 test/                 guardrail test suite
+docs/                 architecture notes and design decisions
+traces/               per-assessment JSON traces (gitignored, written at runtime)
 views/, public/       the original 2024 Express + EJS app
 ```
 
