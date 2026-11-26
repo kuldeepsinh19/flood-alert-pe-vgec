@@ -244,7 +244,8 @@ cp .env.example .env     # add ANTHROPIC_API_KEY to switch the AI layer on
 ```
 
 ```bash
-npm start                    # web app → http://localhost:4000
+npm start                    # web app → http://localhost:4000 (set PORT to change it)
+npm run dev                  # same, restarting on file changes (nodemon)
 npm run assess -- mangarh    # ⭐ fastest way to see it work — full agent output in your terminal
 npm test                     # guardrail test suite
 npm run evals                # full eval run (costs money)
